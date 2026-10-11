@@ -1,0 +1,921 @@
+/* ==========================================================
+   Revista interactiva – Gabrielle Camera
+   El tamaño de fuente de #magazine lo ajusta script.js según
+   el ancho de página, por eso el contenido usa unidades em.
+   ========================================================== */
+
+:root {
+  --bg: #3b0809;
+  --paper: #efe0c8;
+  --ink: #600d12;
+  --ink-soft: rgba(96, 13, 18, 0.72);
+  --line: rgba(96, 13, 18, 0.22);
+  --wine: #ad2b31;
+  --placeholder: #e0e0e0;
+  --placeholder-ink: #9a9a9a;
+
+  --serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --sans: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+
+  --dark: #1a1a1a;
+  --cover-red: #c8101a;
+  --display: "Instrument Serif", var(--serif);
+  --script: "Pinyon Script", cursive;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background: radial-gradient(ellipse at center, #4d0f10 0%, var(--bg) 70%);
+  color: var(--ink);
+  font-family: var(--sans);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px 16px;
+  overflow-x: hidden;
+}
+
+/* ---------- Libro ---------- */
+
+.magazine-viewport {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#magazine {
+  font-size: 16px; /* valor base; script.js lo recalcula */
+  flex: none; /* nunca más angosto que el tamaño que le da turn.js */
+}
+
+#magazine .page {
+  background-color: var(--paper);
+  color: var(--ink);
+  padding: 2.4em 2.4em 2.6em;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Sombra del lomo muy sutil: .even = página izquierda, .odd = derecha */
+#magazine .page.even {
+  background-image: linear-gradient(to left, rgba(59, 8, 9, 0.05) 0%, rgba(59, 8, 9, 0) 3%);
+}
+
+#magazine .page.odd {
+  background-image: linear-gradient(to right, rgba(59, 8, 9, 0.05) 0%, rgba(59, 8, 9, 0) 3%);
+}
+
+/* Sombra del libro completo. drop-shadow sigue la silueta pintada, así
+   no se proyecta una página sobre la otra en el lomo (un box-shadow por
+   página sí lo hacía) ni aparece una caja vacía junto a la portada. */
+#magazine {
+  filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.45));
+}
+
+/* ---------- Placeholder de imagen ---------- */
+
+.img-placeholder {
+  background-color: #e0e0e0;
+  color: var(--placeholder-ink);
+  width: 100%;
+  min-height: 6em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  font-family: var(--sans);
+  font-size: 0.7em;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.img-placeholder::before {
+  content: "\f030"; /* fa-camera */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 1.8em;
+  letter-spacing: 0;
+}
+
+.img-placeholder::after {
+  content: "Imagen";
+}
+
+/* ---------- Elementos comunes ---------- */
+
+/* El número va centrado; las esquinas exteriores son para .page-nav */
+.page-number {
+  position: absolute;
+  bottom: 1em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--serif);
+  font-size: 0.7em;
+  color: var(--ink-soft);
+}
+
+/* ---------- Navegación dentro de las páginas ----------
+   script.js inserta un .page-nav en cada página. En doble página solo se
+   ve el botón de la esquina exterior (Volver en las pares/izquierda,
+   Siguiente en las impares/derecha); en página sola se ven ambos. */
+
+.page-nav {
+  position: absolute;
+  left: 2.4em;
+  right: 2.4em;
+  bottom: 0.5em;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.page-nav button {
+  pointer-events: auto;
+  background: none;
+  border: 0;
+  padding: 0.4em 0;
+  color: inherit;
+  font-family: var(--sans);
+  font-size: 0.55em;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+.page-nav button:hover,
+.page-nav button:focus-visible {
+  opacity: 1;
+}
+
+.page-nav .nav-prev:hover { transform: translateX(-0.3em); }
+.page-nav .nav-next:hover { transform: translateX(0.3em); }
+
+.page-nav .nav-next {
+  margin-left: auto;
+}
+
+.page-nav button:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+}
+
+#magazine:not(.is-single) .page.even .nav-next,
+#magazine:not(.is-single) .page.odd .nav-prev {
+  display: none;
+}
+
+/* Sobre la foto de portada: más visible y con sombra para leerse */
+.page-cover .page-nav button {
+  color: #fff;
+  opacity: 0.85;
+  text-shadow: 0 0 0.6em rgba(0, 0, 0, 0.5);
+}
+
+.kicker {
+  display: block;
+  font-size: 0.6em;
+  font-weight: 500;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8em;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  background: transparent;
+  text-decoration: none;
+  font-family: var(--sans);
+  font-size: 0.6em;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 1.2em 2em;
+  transition: background 0.25s, color 0.25s;
+}
+
+.btn-outline:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ---------- Página 1: Portada ---------- */
+
+/* Collage editorial: todo en posición absoluta sobre la foto a sangre.
+   Capas: foto 0 → título 1 → fotos pequeñas 2 → textos 3. */
+
+#magazine .page-cover {
+  display: block;
+  padding: 0;
+  overflow: hidden; /* nada del collage sale del papel durante el pase */
+  color: var(--cover-red);
+}
+
+.cover-main {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 30%;
+  z-index: 0;
+}
+
+.cover-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  margin: 0;
+  text-align: center;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 6.8em;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transform: scaleY(1.45);
+  transform-origin: top;
+}
+
+.cover-tag,
+.cover-caption {
+  font-family: var(--sans);
+  font-size: 0.95em;
+  text-transform: uppercase;
+  text-shadow: 0 0 0.6em rgba(255, 255, 255, 0.35);
+}
+
+.cover-tag {
+  position: absolute;
+  top: 24%;
+  z-index: 3;
+  letter-spacing: 0.04em;
+}
+
+.cover-tag-left  { left: 6.5%; }
+.cover-tag-right { right: 7.5%; }
+
+.cover-stack {
+  position: absolute;
+  left: 0;
+  top: 33%;
+  width: 38%;
+  height: 44%;
+  z-index: 2;
+}
+
+.cover-stack img {
+  position: absolute;
+  object-fit: cover;
+  border: 0.15em solid #fff;
+  box-shadow: 0 0.4em 1.2em rgba(0, 0, 0, 0.35);
+}
+
+.stack-back {
+  left: 35%;
+  top: 0;
+  width: 64%;
+  height: 59%;
+  z-index: 1;
+}
+
+.stack-front {
+  left: 0;
+  top: 38%;
+  width: 59%;
+  height: 61%;
+  z-index: 2;
+}
+
+.cover-caption {
+  position: absolute;
+  left: 3%;
+  bottom: 3%;
+  width: 22%;
+  z-index: 3;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.cover-caption p {
+  margin: 0;
+}
+
+.cover-caption p + p {
+  margin-top: 1.6em;
+}
+
+.cover-signature {
+  position: absolute;
+  right: 6%;
+  bottom: 9%;
+  width: 42%;
+  height: 16%;
+  z-index: 3;
+}
+
+.cover-script {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--script);
+  font-size: 3.6em;
+  line-height: 1;
+  white-space: nowrap;
+  transform: rotate(-8deg);
+}
+
+.cover-vol {
+  position: absolute;
+  right: 12%;
+  bottom: 0;
+  font-family: var(--display);
+  font-size: 2.2em;
+  line-height: 1;
+  transform: scaleY(1.3);
+  transform-origin: bottom;
+}
+
+/* ---------- Páginas 2 y 3: Boudoir / Retrato ----------
+   Boceto "AcomodoDeRetratos": dos columnas asimétricas, texto y una sola
+   foto a toda la altura. Retrato invierte el orden para equilibrar la
+   doble página. La palabra gigante translúcida imita el fondo del boceto. */
+
+#magazine .page-intro {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  grid-template-rows: minmax(0, 1fr); /* fila del alto de la página: la foto no la estira */
+  column-gap: 1.6em;
+  align-items: center;
+}
+
+#magazine .page-retrato {
+  grid-template-columns: 1.2fr 1fr;
+}
+
+.page-retrato .intro-photo { grid-column: 1; grid-row: 1; }
+.page-retrato .intro-text  { grid-column: 2; grid-row: 1; }
+
+.intro-watermark {
+  position: absolute;
+  top: 0.05em;
+  left: -0.04em;
+  z-index: 0;
+  font-family: var(--display);
+  font-size: 8.5em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--ink);
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+.page-retrato .intro-watermark {
+  left: auto;
+  right: -0.04em;
+}
+
+.intro-text {
+  position: relative;
+  z-index: 1;
+}
+
+.intro-text .kicker {
+  color: var(--ink-soft);
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 2em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0.35em 0 0.55em;
+}
+
+.lead {
+  font-family: var(--serif);
+  font-size: 0.8em;
+  line-height: 1.7;
+  margin: 0 0 1.8em;
+}
+
+.intro-text .btn-outline {
+  padding: 1em 1.6em;
+  white-space: nowrap;
+}
+
+/* Una sola foto a toda la columna, separada del borde superior para
+   dejar respirar la marca de agua. object-fit recorta sin deformar. */
+.intro-photo {
+  position: relative;
+  z-index: 1;
+  display: block;
+  align-self: stretch;
+  width: 100%;
+  height: calc(100% - 4.6em); /* alto de la fila menos el margen vertical */
+  min-height: 0;
+  margin: 3.4em 0 1.2em;
+  object-fit: cover;
+  object-position: 50% 30%;
+  background-color: var(--placeholder);
+}
+
+/* ---------- Páginas 4 y 5: Galería oscura ----------
+   Boceto "ImagenesDel1-6": fondo casi negro, título serif centrado, una
+   panorámica y tres verticales que la montan por abajo (margen negativo)
+   con un escalonado distinto en cada página. Pies de foto en script. */
+
+#magazine .page-dark {
+  background-color: var(--dark);
+  color: var(--paper);
+  justify-content: center;
+}
+
+.page-dark .page-number {
+  color: rgba(239, 224, 200, 0.55);
+}
+
+.gallery-header {
+  text-align: center;
+  margin-bottom: 1.4em;
+}
+
+.gallery-header h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 2.6em;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 0.2em;
+}
+
+.gallery-header .kicker {
+  opacity: 0.65;
+}
+
+.page-dark figure {
+  margin: 0;
+}
+
+/* Fondo mientras carga cada foto */
+.page-dark img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  background-color: #333;
+}
+
+.gallery-pano {
+  position: relative;
+  z-index: 1;
+}
+
+.gallery-pano img {
+  aspect-ratio: 2 / 1;
+}
+
+.gallery-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7em;
+  margin-top: -2.4em;
+  padding: 0 0.9em;
+}
+
+.gallery-row figure {
+  flex: 1;
+  min-width: 0;
+}
+
+/* El marco del color de fondo separa las fotos donde se enciman */
+.gallery-row img {
+  aspect-ratio: 2 / 3;
+  box-shadow: 0 0 0 0.25em var(--dark);
+}
+
+.gallery-row figcaption {
+  font-family: var(--script);
+  font-size: 1.35em;
+  line-height: 1;
+  text-align: center;
+  margin-top: 0.35em;
+}
+
+.gallery-arrivals .gallery-row figure:nth-child(2) {
+  transform: translateY(-1.1em);
+}
+
+/* 88 % de ancho con proporción 1.76:1 = misma altura que la panorámica
+   de la página 4, así los títulos quedan alineados en la doble página */
+.gallery-collection .gallery-pano {
+  width: 88%;
+  margin-left: auto;
+}
+
+.gallery-collection .gallery-pano img {
+  aspect-ratio: 1.76 / 1;
+  object-position: 50% 25%; /* la foto actual es vertical: encuadra el rostro */
+}
+
+.gallery-collection .gallery-row figure:nth-child(1) {
+  transform: translateY(-1.4em);
+}
+
+.gallery-collection .gallery-row figure:nth-child(3) {
+  transform: translateY(-0.6em);
+}
+
+.gallery-script {
+  position: absolute;
+  top: 0.1em;
+  left: -0.5em;
+  z-index: 1;
+  font-family: var(--script);
+  font-size: 2.6em;
+  line-height: 1;
+  transform: rotate(-8deg);
+  text-shadow: 0 0.04em 0.12em rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+}
+
+/* ---------- Páginas 6 y 7: Paquetes y precios ---------- */
+
+.prices-header {
+  text-align: center;
+  margin-bottom: 1.1em;
+}
+
+.prices-header h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.7em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0.35em 0 0.3em;
+}
+
+.prices-category {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.9em;
+  margin: 0;
+}
+
+.prices-category::before,
+.prices-category::after {
+  content: "";
+  display: inline-block;
+  width: 2em;
+  height: 1px;
+  background: var(--ink);
+  vertical-align: middle;
+  margin: 0 0.8em;
+}
+
+/* Acordeones: <summary> como subtítulo de revista, contenido en sans fino */
+
+.accordion details {
+  margin: 0;
+}
+
+.accordion summary {
+  display: flex;
+  align-items: baseline;
+  gap: 1em;
+  list-style: none; /* Firefox: quita el marcador */
+  cursor: pointer;
+  padding: 0.95em 0.3em 0.8em;
+  border-bottom: 1px solid var(--wine);
+  font-family: var(--serif);
+  font-size: 0.92em;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition: color 0.25s, padding 0.25s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordion summary::marker {
+  content: "";
+}
+
+.accordion summary:hover {
+  color: var(--wine);
+  padding-left: 0.6em;
+}
+
+.accordion summary:focus-visible {
+  outline: 1px solid var(--wine);
+  outline-offset: 2px;
+}
+
+.accordion summary .price {
+  margin-left: auto;
+  font-style: italic;
+  font-size: 0.95em;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+/* Cruz fina que gira a "×" al abrir */
+.accordion summary::after {
+  content: "+";
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 1.1em;
+  line-height: 1;
+  color: var(--wine);
+  transition: transform 0.3s ease;
+}
+
+.accordion details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.accordion ul {
+  list-style: none;
+  margin: 0;
+  padding: 0.9em 0.3em 1em;
+  columns: 2;
+  column-gap: 2em;
+  font-family: var(--sans);
+  font-size: 0.62em;
+  font-weight: 300;
+  line-height: 2.3;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+}
+
+.accordion details[open] ul {
+  animation: accordion-in 0.35s ease;
+}
+
+.accordion li {
+  break-inside: avoid;
+}
+
+.accordion li::before {
+  content: "";
+  display: inline-block;
+  width: 0.9em;
+  height: 1px;
+  background: var(--wine);
+  vertical-align: middle;
+  margin-right: 0.8em;
+}
+
+@keyframes accordion-in {
+  from { opacity: 0; transform: translateY(-0.3em); }
+  to   { opacity: 1; transform: none; }
+}
+
+.page-prices .btn-reserve {
+  align-self: center;
+  margin-top: 1em;
+}
+
+.btn-reserve i {
+  font-size: 1.4em;
+}
+
+/* Notas al pie: dos columnas; Vestuario (texto largo) ocupa todo el ancho */
+.fine-print {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9em 1.2em;
+  padding-top: 0.9em;
+  margin-bottom: 0.4em;
+}
+
+.fine-print .fine-print-full {
+  grid-column: 1 / -1;
+}
+
+.fine-print h3 {
+  font-size: 0.55em;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin: 0 0 0.6em;
+}
+
+.fine-print p {
+  font-size: 0.6em;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+/* ---------- Página 8: Contraportada ---------- */
+
+#magazine .page-back {
+  background-color: var(--ink);
+  color: var(--paper);
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.back-brand {
+  font-family: var(--serif);
+  font-size: 1.1em;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin: 1.5em 0 0;
+}
+
+.back-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+  width: 100%;
+  max-width: 20em;
+}
+
+.btn-outline.btn-large {
+  border-color: var(--paper);
+  color: var(--paper);
+  font-size: 0.68em;
+  letter-spacing: 0.18em;
+  line-height: 1.6;
+  padding: 1.6em 1.8em;
+}
+
+.btn-outline.btn-large i {
+  font-size: 1.5em;
+}
+
+.btn-outline.btn-large strong {
+  font-weight: 600;
+}
+
+.btn-outline.btn-large:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.back-social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9em;
+}
+
+.back-social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  color: var(--paper);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-size: 0.62em;
+  letter-spacing: 0.12em;
+  opacity: 0.8;
+  transition: opacity 0.25s;
+}
+
+.back-social a:hover,
+.back-social a:focus-visible {
+  opacity: 1;
+}
+
+.back-social i {
+  font-size: 1.4em;
+}
+
+.back-footer {
+  font-size: 0.6em;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin: 0 0 1em;
+}
+
+/* ---------- Móvil (página única, < 768px; ver BREAKPOINT en script.js) ----------
+   La página escala en em con el ancho de pantalla, así que en un teléfono
+   la base ronda 12px y los textos chicos bajaban de 7px. Aquí se suben
+   esos textos y se reducen los márgenes interiores; script.js además da
+   a la página proporción A4 para que haya alto suficiente. */
+
+@media (max-width: 767px) {
+  body {
+    padding: 8px;
+    gap: 0;
+  }
+
+  #magazine .page {
+    padding: 1.8em 1.5em 2.6em;
+  }
+
+  .page-nav {
+    left: 1.5em;
+    right: 1.5em;
+  }
+
+  .page-nav button {
+    font-size: 0.8em;
+    letter-spacing: 0.2em;
+    opacity: 0.75;
+  }
+
+  .page-number {
+    font-size: 0.8em;
+  }
+
+  .kicker,
+  .btn-outline {
+    font-size: 0.8em;
+    letter-spacing: 0.2em;
+  }
+
+  .intro-text .btn-outline {
+    padding: 0.9em 1em;
+    letter-spacing: 0.15em;
+  }
+
+  .lead {
+    font-size: 1.02em;
+    line-height: 1.55;
+  }
+
+  .prices-header {
+    margin-bottom: 0.8em;
+  }
+
+  .accordion summary {
+    padding: 0.8em 0.3em 0.65em;
+  }
+
+  .accordion ul {
+    font-size: 0.88em;
+    line-height: 1.75;
+    padding: 0.7em 0.3em 0.8em;
+  }
+
+  .fine-print {
+    gap: 0.9em;
+  }
+
+  .fine-print h3 {
+    font-size: 0.72em;
+    letter-spacing: 0.2em;
+  }
+
+  .fine-print p {
+    font-size: 0.8em;
+    line-height: 1.45;
+  }
+
+  .btn-outline.btn-large {
+    font-size: 0.8em;
+    letter-spacing: 0.14em;
+  }
+
+  .back-social a {
+    font-size: 0.85em;
+    letter-spacing: 0.08em;
+  }
+
+  .back-footer {
+    font-size: 0.8em;
+  }
+}

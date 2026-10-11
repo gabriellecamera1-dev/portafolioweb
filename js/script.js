@@ -1,0 +1,123 @@
+$(function () {
+  var $magazine = $('#magazine');
+  var PAGE_RATIO = 1.3; // alto / ancho de cada página
+  var MOBILE_RATIO = 1.414; // en móvil, proporción A4: más alto para texto legible
+  var BREAKPOINT = 768; // debajo de esto se muestra una sola página
+  var MOBILE_GUTTER = 8; // margen a cada lado de la página en móvil
+
+  if (!$.fn.turn) {
+    console.error('turn.js no se cargó; la revista se muestra sin animación.');
+    return;
+  }
+
+  // Marca cada página según su lado en doble página (1 = derecha/odd,
+  // 2 = izquierda/even...). Así se pueden añadir o quitar páginas en el
+  // HTML sin tocar clases a mano; el CSS usa .odd/.even para el lomo.
+  var $pages = $magazine.children('.page');
+  $pages.each(function (i) {
+    $(this).toggleClass('odd', i % 2 === 0).toggleClass('even', i % 2 === 1);
+  });
+
+  // Navegación dentro de cada página (sin Volver en la primera ni
+  // Siguiente en la última). El CSS decide cuál se ve según el lado.
+  $pages.each(function (i) {
+    var $nav = $('<nav class="page-nav" aria-label="Navegación de la revista"></nav>');
+    if (i > 0) {
+      $nav.append('<button type="button" class="nav-prev">&lsaquo; Volver</button>');
+    }
+    if (i < $pages.length - 1) {
+      $nav.append('<button type="button" class="nav-next">Siguiente &rsaquo;</button>');
+    }
+    $(this).append($nav);
+  });
+
+  // turn.js mide cada hoja con .width()/.height() de jQuery, que no
+  // cuentan el padding. Con el padding en la hoja, el pliegue se calculaba
+  // sobre una página más chica y la recortaba al pasar. Por eso turn.js
+  // maneja un envoltorio sin padding y .page lo llena al 100%.
+  $pages.wrap('<div class="page-sheet"></div>');
+
+  // Calcula el tamaño del libro según el espacio disponible. En móvil la
+  // página ocupa casi todo el ancho (como Google Books) y solo se achica
+  // si la pantalla no tiene alto suficiente para la proporción vertical.
+  // Se mide con clientWidth/Height (viewport de layout): en móvil
+  // innerWidth crece si algo se desborda antes de que turn.js ajuste el
+  // tamaño, y el libro quedaba más ancho que la pantalla y recortado.
+  function getLayout() {
+    var vw = document.documentElement.clientWidth;
+    var vh = document.documentElement.clientHeight;
+    var single = vw < BREAKPOINT;
+    var pageWidth, ratio;
+
+    if (single) {
+      ratio = MOBILE_RATIO;
+      pageWidth = Math.min(vw - MOBILE_GUTTER * 2, (vh - MOBILE_GUTTER * 2) / ratio);
+    } else {
+      ratio = PAGE_RATIO;
+      pageWidth = Math.min((vw - 32) / 2, (vh - 48) / ratio, 520);
+    }
+    pageWidth = Math.floor(pageWidth);
+
+    return {
+      display: single ? 'single' : 'double',
+      width: single ? pageWidth : pageWidth * 2,
+      height: Math.floor(pageWidth * ratio),
+      fontSize: pageWidth / 30
+    };
+  }
+
+  var layout = getLayout();
+  $magazine.css('font-size', layout.fontSize + 'px');
+  $magazine.toggleClass('is-single', layout.display === 'single');
+
+  $magazine.turn({
+    width: layout.width,
+    height: layout.height,
+    display: layout.display,
+    autoCenter: true,
+    gradients: true,
+    acceleration: true,
+    elevation: 50
+  });
+
+  // Ajuste al cambiar el tamaño de la ventana
+  var resizeTimer;
+  $(window).on('resize orientationchange', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      var next = getLayout();
+      $magazine.css('font-size', next.fontSize + 'px');
+      $magazine.toggleClass('is-single', next.display === 'single');
+      if ($magazine.turn('display') !== next.display) {
+        $magazine.turn('display', next.display);
+      }
+      $magazine.turn('size', next.width, next.height);
+    }, 150);
+  });
+
+  // Navegación integrada. Se corta mousedown/touchstart para que turn.js
+  // no lo tome como el inicio de un arrastre de esquina (los botones
+  // están justo en las esquinas inferiores) y pase dos páginas.
+  $magazine.on('mousedown touchstart', '.page-nav button', function (e) {
+    e.stopPropagation();
+  });
+
+  $magazine.on('click', '.nav-prev', function () {
+    $magazine.turn('previous');
+  });
+
+  $magazine.on('click', '.nav-next', function () {
+    $magazine.turn('next');
+  });
+
+  // Enlaces internos: data-goto="N" lleva a la página N
+  $magazine.on('click', '[data-goto]', function (e) {
+    e.preventDefault();
+    $magazine.turn('page', Number($(this).data('goto')));
+  });
+
+  $(document).on('keydown', function (e) {
+    if (e.key === 'ArrowLeft') $magazine.turn('previous');
+    if (e.key === 'ArrowRight') $magazine.turn('next');
+  });
+});
