@@ -254,6 +254,7 @@ body {
   right: 0;
   z-index: 1;
   margin: 0;
+  color: var(--bg);
   text-align: center;
   font-family: var(--display);
   font-weight: 400;
@@ -607,11 +608,23 @@ body {
 
 /* Acordeones: <summary> como subtítulo de revista, contenido en sans fino */
 
-.accordion details {
+/* La página tiene alto fijo: si un paquete abierto (con su "info
+   importante") no cabe, la lista de paquetes se desplaza por dentro y las
+   notas al pie y la navegación se quedan en su sitio. */
+.page-prices .accordion {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.accordion > details {
   margin: 0;
 }
 
-.accordion summary {
+.accordion > details > summary {
   display: flex;
   align-items: baseline;
   gap: 1em;
@@ -637,7 +650,7 @@ body {
   content: "";
 }
 
-.accordion summary:hover {
+.accordion > details > summary:hover {
   color: var(--wine);
   padding-left: 0.6em;
 }
@@ -647,7 +660,7 @@ body {
   outline-offset: 2px;
 }
 
-.accordion summary .price {
+.accordion > details > summary .price {
   margin-left: auto;
   font-style: italic;
   font-size: 0.95em;
@@ -656,7 +669,7 @@ body {
 }
 
 /* Cruz fina que gira a "×" al abrir */
-.accordion summary::after {
+.accordion > details > summary::after {
   content: "+";
   font-family: var(--sans);
   font-weight: 300;
@@ -666,7 +679,7 @@ body {
   transition: transform 0.3s ease;
 }
 
-.accordion details[open] summary::after {
+.accordion > details[open] > summary::after {
   transform: rotate(45deg);
 }
 
@@ -684,7 +697,7 @@ body {
   color: var(--ink-soft);
 }
 
-.accordion details[open] ul {
+.accordion > details[open] .package-body {
   animation: accordion-in 0.35s ease;
 }
 
@@ -707,9 +720,78 @@ body {
   to   { opacity: 1; transform: none; }
 }
 
+/* Contenido de cada paquete: lista, aviso y botón de reserva centrado */
+.package-body {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1em;
+}
+
 .page-prices .btn-reserve {
   align-self: center;
   margin-top: 1em;
+}
+
+/* "Leer info importante": caja con borde vino y fondo tenue para que
+   destaque sobre el acordeón y la clienta no la pase por alto. */
+.info-box {
+  border: 1px solid var(--wine);
+  border-left-width: 3px;
+  background: rgba(173, 43, 49, 0.07);
+}
+
+.info-box summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.75em 1em;
+  font-family: var(--sans);
+  font-size: 0.6em;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--wine);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.info-box summary::after {
+  content: "\203A"; /* › gira hacia abajo al abrir */
+  float: right;
+  font-size: 1.4em;
+  line-height: 0.7;
+  transition: transform 0.3s ease;
+}
+
+.info-box[open] summary::after {
+  transform: rotate(90deg);
+}
+
+.info-box summary:hover {
+  background: rgba(173, 43, 49, 0.08);
+}
+
+.info-body {
+  padding: 0 1em 0.8em;
+  animation: accordion-in 0.3s ease;
+}
+
+.info-body h3 {
+  font-size: 0.52em;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin: 0.9em 0 0.4em;
+}
+
+.info-body h3:first-child {
+  margin-top: 0.2em;
+}
+
+.info-body p {
+  font-size: 0.58em;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--ink-soft);
 }
 
 .btn-reserve i {
@@ -881,7 +963,7 @@ body {
     margin-bottom: 0.8em;
   }
 
-  .accordion summary {
+  .accordion > details > summary {
     padding: 0.8em 0.3em 0.65em;
   }
 
@@ -901,6 +983,21 @@ body {
   }
 
   .fine-print p {
+    font-size: 0.8em;
+    line-height: 1.45;
+  }
+
+  .info-box summary {
+    font-size: 0.75em;
+    letter-spacing: 0.16em;
+  }
+
+  .info-body h3 {
+    font-size: 0.72em;
+    letter-spacing: 0.2em;
+  }
+
+  .info-body p {
     font-size: 0.8em;
     line-height: 1.45;
   }

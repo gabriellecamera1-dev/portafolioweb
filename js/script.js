@@ -77,7 +77,21 @@ $(function () {
     autoCenter: true,
     gradients: true,
     acceleration: true,
-    elevation: 50
+    elevation: 50,
+    when: {
+      // Sonido al hojear. play() devuelve una promesa: si el navegador
+      // bloquea el audio, el rechazo llega asíncrono y el try/catch no lo
+      // atrapa, por eso también se ignora con .catch().
+      turning: function () {
+        var sound = document.getElementById('flip-sound');
+        if (!sound) return;
+        try {
+          sound.currentTime = 0; // reinicia si se hojea rápido
+          var playing = sound.play();
+          if (playing && playing.catch) playing.catch(function () {});
+        } catch (err) {}
+      }
+    }
   });
 
   // Ajuste al cambiar el tamaño de la ventana
@@ -115,6 +129,26 @@ $(function () {
     e.preventDefault();
     $magazine.turn('page', Number($(this).data('goto')));
   });
+
+  // Al abrir "Leer info importante" la lista de paquetes puede quedar
+  // más alta que la página y desplazarse por dentro: se baja lo justo para
+  // que el aviso y su botón de reserva queden a la vista. "toggle" no
+  // burbujea, por eso se escucha en fase de captura.
+  $magazine[0].addEventListener('toggle', function (e) {
+    var box = e.target;
+    if (!box.open || !$(box).hasClass('info-box')) return;
+    var list = $(box).closest('.accordion')[0];
+    var body = $(box).closest('.package-body')[0];
+    var listRect = list.getBoundingClientRect();
+    // Sin pasar del inicio del aviso, por si no cabe completo
+    var overflow = Math.min(
+      body.getBoundingClientRect().bottom - listRect.bottom,
+      box.getBoundingClientRect().top - listRect.top
+    );
+    if (overflow > 0) {
+      $(list).animate({ scrollTop: list.scrollTop + overflow }, 300);
+    }
+  }, true);
 
   $(document).on('keydown', function (e) {
     if (e.key === 'ArrowLeft') $magazine.turn('previous');
