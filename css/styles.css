@@ -21,6 +21,11 @@
   --cover-red: #c8101a;
   --display: "Instrument Serif", var(--serif);
   --script: "Pinyon Script", cursive;
+  --typewriter: "Courier Prime", "Courier New", monospace; /* galería boudoir */
+
+  --vino: #3f0a0d; /* fondo de las galerías, medido en los bocetos */
+  --carbon: #1c1816; /* galería masculina: negro cálido */
+  --taupe: #4a403a; /* galería masculina: gris cálido */
 }
 
 *,
@@ -451,128 +456,288 @@ body {
   background-color: var(--placeholder);
 }
 
-/* ---------- Páginas 4 y 5: Galería oscura ----------
-   Boceto "ImagenesDel1-6": fondo casi negro, título serif centrado, una
-   panorámica y tres verticales que la montan por abajo (margen negativo)
-   con un escalonado distinto en cada página. Pies de foto en script. */
+/* ---------- Galerías (págs. 4 a 27) ----------
+   Boudoir (4–16) y Retrato (17–24) replican los bocetos de la clienta
+   (Imagenes/Galeria/BOUDOIR y Retrato); la masculina (25–27) usa las
+   mismas piezas (.bd-photo, .bd-word) con diseño propio. Son
+   collages libres, así que fotos y textos van en posición absoluta con
+   porcentajes de la página: turn.js solo cambia el tamaño y el acomodo se
+   conserva igual en doble página (1.3) y en móvil (A4). object-fit: cover
+   absorbe la diferencia de proporción sin deformar las fotos. */
 
-#magazine .page-dark {
-  background-color: var(--dark);
+#magazine .page.bg-vino {
+  background-color: var(--vino);
   color: var(--paper);
-  justify-content: center;
 }
 
-.page-dark .page-number {
+#magazine .page.bg-crema {
+  background-color: var(--paper);
+  color: var(--wine);
+}
+
+#magazine .page.bg-carbon {
+  background-color: var(--carbon);
+  color: var(--paper);
+}
+
+#magazine .page.bg-taupe {
+  background-color: var(--taupe);
+  color: var(--paper);
+}
+
+.bg-vino .page-number,
+.bg-carbon .page-number,
+.bg-taupe .page-number {
   color: rgba(239, 224, 200, 0.55);
 }
 
-.gallery-header {
-  text-align: center;
-  margin-bottom: 1.4em;
+/* Foto pendiente: .bd-photo pisa el display y el fondo del placeholder;
+   se restablecen con tonos del fondo de la página para que el hueco se
+   note sin desentonar. */
+.img-placeholder.bd-photo {
+  display: flex;
+  min-height: 0;
+  background-color: rgba(239, 224, 200, 0.06);
+  color: rgba(239, 224, 200, 0.45);
+  border: 1px dashed rgba(239, 224, 200, 0.3);
+  box-shadow: none;
 }
 
-.gallery-header h2 {
-  font-family: var(--display);
+.bg-crema .img-placeholder.bd-photo {
+  background-color: rgba(96, 13, 18, 0.05);
+  color: var(--ink-soft);
+  border-color: var(--line);
+}
+
+.bd-photo {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  margin: 0;
+  object-fit: cover;
+  background-color: #2a0608; /* mientras carga la foto */
+  box-shadow: 0 0.35em 1em rgba(0, 0, 0, 0.35); /* efecto de foto impresa */
+}
+
+.bd-word {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  font-family: var(--typewriter);
+  font-size: 2em;
   font-weight: 400;
-  font-size: 2.6em;
   line-height: 1;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin: 0 0 0.2em;
+  white-space: nowrap;
 }
 
-.gallery-header .kicker {
-  opacity: 0.65;
+/* Texto vertical. vertical-rl se lee de arriba hacia abajo; girado 180°
+   se lee de abajo hacia arriba. Así no hay que compensar el ancho de la
+   caja como con rotate(90deg). */
+.bd-down,
+.bd-up {
+  writing-mode: vertical-rl;
 }
 
-.page-dark figure {
-  margin: 0;
+.bd-up {
+  transform: rotate(180deg);
 }
 
-/* Fondo mientras carga cada foto */
-.page-dark img {
+/* Pág. 4 — Dulce y suave */
+.bd-01 .bd-t1 { left: 4%; width: 42%; top: 17%; text-align: center; font-size: 2.4em; line-height: 1.4; }
+.bd-01 .bd-p1 { left: 55.5%; top: 4%; width: 40.5%; height: 48%; }
+.bd-01 .bd-p2 { left: 4%; top: 57%; width: 73.5%; height: 35%; }
+
+/* Pág. 5 — Perma / nente */
+.bd-02 .bd-p1 { left: 18.5%; top: 6%; width: 63.5%; height: 74%; }
+.bd-02 .bd-t1 { left: 0; right: 0; top: 82.5%; text-align: center; font-size: 1.6em; line-height: 1.25; }
+
+/* Pág. 6 — Impaciente (vertical a la derecha) */
+.bd-03 .bd-p1 { left: 23%; top: 12%; width: 58%; height: 72%; }
+.bd-03 .bd-t1 { left: 88%; top: 48%; font-size: 1.5em; transform: translateY(-50%) rotate(180deg); }
+
+/* Pág. 7 — Deleite */
+.bd-04 .bd-p1 { left: 15.5%; top: 7%; width: 67%; height: 77%; }
+.bd-04 .bd-t1 { left: 0; right: 0; top: 87%; text-align: center; font-size: 1.8em; }
+
+/* Pág. 8 — Sutil / Tierno. La mitad crema es un pseudo-elemento recortado
+   en diagonal; los textos se inclinan siguiendo esa línea. */
+.bd-05::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--paper);
+  clip-path: polygon(100% 8%, 100% 100%, 21% 100%);
+}
+
+.bd-05 .bd-p1 { left: 6.5%; top: 6.5%; width: 50%; height: 59%; }
+.bd-05 .bd-p2 { left: 63%; top: 55%; width: 34%; height: 37%; }
+.bd-05 .bd-t1 { left: 71%; top: 29%; font-size: 2.2em; transform: translate(-50%, -50%) rotate(-57deg); }
+.bd-05 .bd-t2 { left: 44%; top: 79%; font-size: 2.2em; color: var(--vino); transform: translate(-50%, -50%) rotate(-57deg); }
+
+/* El número y "Siguiente" caen sobre la parte crema */
+.bd-05 .page-number,
+.bd-05 .nav-next {
+  color: var(--vino);
+}
+
+/* La foto pendiente de TIERNO cae sobre la parte crema: tonos de .bg-crema */
+.bd-05 .img-placeholder.bd-photo {
+  background-color: rgba(96, 13, 18, 0.05);
+  color: var(--ink-soft);
+  border-color: var(--line);
+}
+
+/* Pág. 9 — Seductor / En vol vente */
+.bd-06 .bd-t1 { left: 0; right: 0; top: 4%; text-align: center; font-size: 2.2em; }
+.bd-06 .bd-p1 { left: 10.5%; top: 14%; width: 32%; height: 38%; }
+.bd-06 .bd-p2 { left: 55.5%; top: 17%; width: 31.5%; height: 37.5%; }
+.bd-06 .bd-p3 { left: 33.5%; top: 58%; width: 33%; height: 34%; }
+.bd-06 .bd-t2 { left: 4.5%; top: 61%; font-size: 1.4em; line-height: 2.5; }
+.bd-06 .bd-t2 span { display: block; }
+.bd-06 .bd-t2 span + span { padding-left: 0.6em; }
+
+/* Pág. 10 — vulnerable */
+.bd-07 .bd-p1 { left: 5.5%; top: 30%; width: 89%; height: 47.5%; }
+.bd-07 .bd-t1 { left: 0; right: 0; top: 86%; text-align: center; font-size: 1.9em; letter-spacing: 0.15em; text-transform: none; }
+
+/* Pág. 11 — Envolvente */
+.bd-08 .bd-p1 { left: 15.5%; top: 6.5%; width: 67%; height: 78%; }
+.bd-08 .bd-t1 { left: 0; right: 0; top: 88%; text-align: center; font-size: 1.5em; }
+
+/* Pág. 12 — Deseo (foto pendiente) */
+.bd-09 .bd-t1 { left: 0; right: 0; top: 11%; text-align: center; font-size: 2em; }
+.bd-09 .bd-p1 { left: 9%; top: 28%; width: 82%; height: 44%; }
+
+/* Pág. 13 — Con-pla / cer (vertical) y Soberana */
+.bd-10 .bd-p1 { left: 5%; top: 4%; width: 46%; height: 55.5%; }
+.bd-10 .bd-t1 { right: 9%; top: 6%; font-size: 3.2em; line-height: 1.25; }
+.bd-10 .bd-t2 { left: 14%; top: 64%; font-size: 1.7em; }
+.bd-10 .bd-p2 { left: 35.5%; top: 64%; width: 61%; height: 28%; }
+
+/* Pág. 14 — Intachable */
+.bd-11 .bd-t1 { left: 0; right: 0; top: 4.5%; text-align: center; font-size: 2.2em; }
+.bd-11 .bd-p1 { left: 20.5%; top: 17.5%; width: 58.5%; height: 70%; }
+
+/* Pág. 15 — EX + otico / tasis */
+.bd-12 .bd-t1,
+.bd-12 .bd-t2 { font-size: 2em; letter-spacing: 0.15em; text-transform: none; }
+.bd-12 .bd-t1 { left: 10%; top: 13.5%; }
+.bd-12 .bd-p1 { left: 3.7%; top: 22%; width: 46%; height: 55%; }
+.bd-12 .bd-t2 { left: 59%; top: 19.5%; }
+.bd-12 .bd-p2 { left: 56.3%; top: 29%; width: 37.2%; height: 44.5%; }
+.bd-12 .bd-t3 { left: 8.5%; top: 79%; font-size: 5.2em; letter-spacing: 0.1em; }
+
+/* Pág. 16 — Sabor / Tropical */
+.bd-13 .bd-t1 { left: 7%; top: 3.5%; font-size: 2.2em; }
+.bd-13 .bd-p1 { left: 21.5%; top: 13.5%; width: 57%; height: 68%; }
+.bd-13 .bd-t2 { right: 4%; top: 85%; font-size: 2em; }
+
+/* --- Galería Retrato (págs. 17 a 24) --- */
+
+/* Pág. 17 — Magnética / Atracción */
+.rt-01 .bd-p1 { left: 2.6%; top: 5.4%; width: 50.4%; height: 54%; }
+.rt-01 .bd-t1 { left: 77%; top: 27%; font-size: 1.5em; transform: translate(-50%, -50%); }
+.rt-01 .bd-t2 { left: 28%; top: 77%; font-size: 1.6em; line-height: 1.5; text-align: center; transform: translate(-50%, -50%); }
+.rt-01 .bd-p2 { left: 57.4%; top: 54%; width: 39.8%; height: 39%; }
+
+/* Pág. 18 — Resiliente */
+.rt-02 .bd-t1 { left: 0; right: 0; top: 7.5%; text-align: center; font-size: 2.3em; }
+.rt-02 .bd-p1 { left: 19.7%; top: 20%; width: 61.3%; height: 72%; }
+
+/* Pág. 19 — Imparable (vertical, de arriba hacia abajo) */
+.rt-03 .bd-p1 { left: 3.9%; top: 7%; width: 71.7%; height: 85%; }
+.rt-03 .bd-t1 { left: 84%; top: 50%; font-size: 3.2em; transform: translateY(-50%); }
+
+/* Pág. 20 — Auténtica */
+.rt-04 .bd-p1 { left: 27%; top: 7.2%; width: 60.6%; height: 72.6%; }
+.rt-04 .bd-t1 { left: 4.5%; top: 84%; font-size: 2.2em; }
+
+/* Pág. 21 — Revelador */
+.rt-05 .bd-p1 { left: 17.3%; top: 9%; width: 60.3%; height: 72.4%; }
+.rt-05 .bd-t1 { left: 0; right: 0; top: 86%; text-align: center; font-size: 2.1em; padding-left: 0.4em; }
+
+/* Pág. 22 — Desafiante */
+.rt-06 .bd-p1 { left: 18.5%; top: 9%; width: 64.2%; height: 76%; }
+.rt-06 .bd-t1 { left: 0; right: 0; top: 88%; text-align: center; font-size: 1.9em; }
+
+/* Pág. 23 — Esperanza: foto grande a sangre por la derecha y, abajo, un
+   acercamiento de la misma toma (el contenedor recorta la foto escalada;
+   transform-origin apunta a la mano con el reloj). */
+.rt-07 .bd-p1 { left: 33.6%; top: 1.8%; width: 66.4%; height: 66%; }
+.rt-07 .bd-p2 { left: 5.4%; top: 69%; width: 36.6%; height: 24%; overflow: hidden; }
+.rt-07 .bd-t1 { left: 48%; top: 81%; font-size: 2.1em; }
+
+.rt-zoom img {
   display: block;
   width: 100%;
+  height: 100%;
   object-fit: cover;
-  background-color: #333;
+  object-position: 50% 100%; /* la caja es apaisada: muestra la parte baja */
+  transform: scale(2.2);
+  transform-origin: 50% 98%;
 }
 
-.gallery-pano {
-  position: relative;
-  z-index: 1;
-}
+/* Pág. 24 — solo foto */
+.rt-08 .bd-p1 { left: 21.4%; top: 13%; width: 61.1%; height: 73.3%; }
 
-.gallery-pano img {
-  aspect-ratio: 2 / 1;
-}
+/* --- Retrato masculino (págs. 25 a 27) ---
+   Diseño propio: títulos grandes en Instrument Serif con pies en la
+   tipografía de máquina de escribir de las otras galerías, fondos oscuros
+   cálidos y fotos encimadas en escalonado asimétrico. */
 
-.gallery-row {
-  position: relative;
+.hm-title {
+  position: absolute;
   z-index: 2;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.7em;
-  margin-top: -2.4em;
-  padding: 0 0.9em;
+  margin: 0;
+  font-family: var(--display);
+  font-size: 3.6em;
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.gallery-row figure {
-  flex: 1;
-  min-width: 0;
+.hm-cap {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  font-family: var(--typewriter);
+  font-size: 0.7em;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.7;
 }
 
 /* El marco del color de fondo separa las fotos donde se enciman */
-.gallery-row img {
-  aspect-ratio: 2 / 3;
-  box-shadow: 0 0 0 0.25em var(--dark);
-}
+.bg-carbon .bd-photo { box-shadow: 0 0 0 0.3em var(--carbon), 0 0.6em 1.4em rgba(0, 0, 0, 0.5); }
+.bg-taupe .bd-photo { box-shadow: 0 0 0 0.3em var(--taupe), 0 0.6em 1.4em rgba(0, 0, 0, 0.4); }
 
-.gallery-row figcaption {
-  font-family: var(--script);
-  font-size: 1.35em;
-  line-height: 1;
-  text-align: center;
-  margin-top: 0.35em;
-}
+/* Pág. 25 — Tinta & humo: retrato a sangre a la izquierda */
+.hm-01 .bd-p1 { left: 0; top: 0; width: 46%; height: 100%; box-shadow: none; }
+.hm-01 .hm-title { left: 52%; top: 7%; }
+.hm-01 .bd-p2 { left: 52%; top: 28%; width: 36%; height: 33%; }
+.hm-01 .bd-p3 { left: 60%; top: 57%; width: 33%; height: 33%; z-index: 2; }
+.hm-01 .hm-cap { left: 93.5%; top: 6%; }
 
-.gallery-arrivals .gallery-row figure:nth-child(2) {
-  transform: translateY(-1.1em);
-}
+/* Pág. 26 — Temple */
+.hm-02 .bd-p1 { left: 6%; top: 6%; width: 38%; height: 43%; }
+.hm-02 .bd-p2 { left: 50%; top: 6%; width: 44%; height: 62%; }
+.hm-02 .bd-p3 { left: 16%; top: 46%; width: 30%; height: 42%; z-index: 2; }
+.hm-02 .hm-title { left: 52%; top: 73%; }
+.hm-02 .hm-cap { left: 52.5%; top: 84%; }
 
-/* 88 % de ancho con proporción 1.76:1 = misma altura que la panorámica
-   de la página 4, así los títulos quedan alineados en la doble página */
-.gallery-collection .gallery-pano {
-  width: 88%;
-  margin-left: auto;
-}
+/* Pág. 27 — Presencia: panorámica y tres verticales escalonadas */
+.hm-03 .hm-title { left: 6%; top: 4.5%; font-size: 3.4em; }
+.hm-03 .bd-p1 { left: 6%; top: 14%; width: 88%; height: 34%; object-position: 50% 18%; /* encuadra el rostro */ }
+.hm-03 .bd-p2 { left: 6%; top: 52%; width: 27%; height: 36%; }
+.hm-03 .bd-p3 { left: 36.5%; top: 55%; width: 27%; height: 36%; }
+.hm-03 .bd-p4 { left: 67%; top: 52%; width: 27%; height: 36%; }
 
-.gallery-collection .gallery-pano img {
-  aspect-ratio: 1.76 / 1;
-  object-position: 50% 25%; /* la foto actual es vertical: encuadra el rostro */
-}
-
-.gallery-collection .gallery-row figure:nth-child(1) {
-  transform: translateY(-1.4em);
-}
-
-.gallery-collection .gallery-row figure:nth-child(3) {
-  transform: translateY(-0.6em);
-}
-
-.gallery-script {
-  position: absolute;
-  top: 0.1em;
-  left: -0.5em;
-  z-index: 1;
-  font-family: var(--script);
-  font-size: 2.6em;
-  line-height: 1;
-  transform: rotate(-8deg);
-  text-shadow: 0 0.04em 0.12em rgba(0, 0, 0, 0.55);
-  pointer-events: none;
-}
-
-/* ---------- Páginas 6 y 7: Paquetes y precios ---------- */
+/* ---------- Páginas 28 y 29: Paquetes y precios ---------- */
 
 .prices-header {
   text-align: center;
