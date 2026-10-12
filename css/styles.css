@@ -624,6 +624,65 @@ body {
   margin: 0;
 }
 
+/* Foto al lado de los paquetes (diseño de la clienta): pág. 6 lista |
+   foto, pág. 7 foto | lista, el orden lo da el HTML. La fila se encoge si
+   falta alto y el acordeón, estirado a ese alto, se desplaza por dentro;
+   la foto tiene alto fijo y nunca se deforma (object-fit). */
+.prices-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2em;
+  flex: 0 1 auto;
+  min-height: 0;
+}
+
+.prices-body .accordion {
+  flex: 1 1 0;
+  min-width: 0;
+  align-self: stretch;
+}
+
+.prices-photo {
+  flex: 0 0 42%;
+  width: 42%;
+  height: 17em;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+/* Columna angosta: el precio baja bajo el nombre, la lista va en una
+   sola columna y el botón de WhatsApp se compacta para no desbordar. */
+.prices-body .accordion > details > summary {
+  flex-wrap: wrap;
+  gap: 0.2em 0.6em;
+  letter-spacing: 0.1em;
+}
+
+.prices-body .accordion > details > summary > span:first-child {
+  flex: 1 0 100%;
+}
+
+.prices-body .accordion > details > summary .price {
+  margin-left: 0;
+  flex: 1;
+}
+
+.prices-body .accordion ul {
+  columns: 1;
+  line-height: 2;
+}
+
+.prices-body .btn-reserve {
+  padding: 1.1em 1em;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.prices-body .info-box summary {
+  padding: 0.75em 0.8em;
+  letter-spacing: 0.14em;
+}
+
 .accordion > details > summary {
   display: flex;
   align-items: baseline;
@@ -961,6 +1020,26 @@ body {
 
   .prices-header {
     margin-bottom: 0.8em;
+  }
+
+  /* En móvil el texto es más grande: la foto cede ancho a la columna de
+     paquetes. Si el botón aún no cabe en una línea, se parte antes que
+     desbordar. */
+  .prices-body {
+    gap: 1em;
+  }
+
+  .prices-photo {
+    flex-basis: 36%;
+    width: 36%;
+    height: 15em;
+  }
+
+  .prices-body .btn-reserve {
+    gap: 0.5em;
+    padding: 1em 0.6em;
+    letter-spacing: 0.05em;
+    white-space: normal;
   }
 
   .accordion > details > summary {
