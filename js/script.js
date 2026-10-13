@@ -5,6 +5,11 @@ $(function () {
   var BREAKPOINT = 768; // debajo de esto se muestra una sola página
   var MOBILE_GUTTER = 8; // margen a cada lado de la página en móvil
 
+  // Página desde la que se saltó a los precios con "Ver paquetes". Sin
+  // esto, Volver en los precios iba a la página anterior (la galería
+  // masculina) en vez de regresar a la intro de donde vino la persona.
+  var paginaOrigen = null;
+
   if (!$.fn.turn) {
     console.error('turn.js no se cargó; la revista se muestra sin animación.');
     return;
@@ -29,6 +34,13 @@ $(function () {
       $nav.append('<button type="button" class="nav-next">Siguiente &rsaquo;</button>');
     }
     $(this).append($nav);
+  });
+
+  // Números de las páginas de precios (1 = portada), para saber cuándo
+  // se sale de ellas sin usar Volver.
+  var paginasPrecios = [];
+  $pages.each(function (i) {
+    if ($(this).hasClass('page-prices')) paginasPrecios.push(i + 1);
   });
 
   // turn.js mide cada hoja con .width()/.height() de jQuery, que no
@@ -90,6 +102,11 @@ $(function () {
           var playing = sound.play();
           if (playing && playing.catch) playing.catch(function () {});
         } catch (err) {}
+      },
+      // Si se sale de los precios por otro camino (Siguiente, teclado,
+      // arrastre), el origen ya no aplica: Volver vuelve a ser normal.
+      turned: function (e, page) {
+        if (paginasPrecios.indexOf(page) === -1) paginaOrigen = null;
       }
     }
   });
@@ -112,21 +129,44 @@ $(function () {
   // Navegación integrada. Se corta mousedown/touchstart para que turn.js
   // no lo tome como el inicio de un arrastre de esquina (los botones
   // están justo en las esquinas inferiores) y pase dos páginas.
-  $magazine.on('mousedown touchstart', '.page-nav button', function (e) {
+  $magazine.on('mousedown touchstart', '.page-nav button, .cover-next', function (e) {
     e.stopPropagation();
   });
 
+  // Botón SIGUIENTE del bloque "Portafolio" de la portada
+  $magazine.on('click', '.cover-next', function () {
+    $magazine.turn('next');
+  });
+
+  // En los precios, si se llegó con "Ver paquetes", Volver y Siguiente
+  // actúan como si se siguiera en la intro de origen: desde la 03, Volver
+  // lleva a la 02 y Siguiente a la 04; desde la 02, a la portada y a la 03.
+  // Antes iban a la galería masculina o a la contraportada ("cerraba la
+  // revista"). paso es -1 o +1. Devuelve true si hizo el salto.
+  function moverDesdeOrigen(boton, paso) {
+    if (paginaOrigen === null || !$(boton).closest('.page-prices').length) return false;
+    var destino = paginaOrigen + paso;
+    paginaOrigen = null;
+    $magazine.turn('page', destino);
+    return true;
+  }
+
   $magazine.on('click', '.nav-prev', function () {
-    $magazine.turn('previous');
+    if (!moverDesdeOrigen(this, -1)) $magazine.turn('previous');
   });
 
   $magazine.on('click', '.nav-next', function () {
-    $magazine.turn('next');
+    if (!moverDesdeOrigen(this, 1)) $magazine.turn('next');
   });
 
   // Enlaces internos: data-goto="N" lleva a la página N
   $magazine.on('click', '[data-goto]', function (e) {
     e.preventDefault();
+    // Se toma el número de la página donde está el botón y no
+    // turn('page'): en doble página turn.js puede dar la otra del pliego.
+    if ($(this).hasClass('btn-paquetes')) {
+      paginaOrigen = $pages.index($(this).closest('.page')) + 1;
+    }
     $magazine.turn('page', Number($(this).data('goto')));
   });
 

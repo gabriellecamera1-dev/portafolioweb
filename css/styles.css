@@ -19,6 +19,23 @@
 
   --dark: #1a1a1a;
   --cover-red: #c8101a;
+
+  /* ===== Colores de la portada (página 1) =====
+     Rojo del título "GABRIELLE" y de la leyenda sobre la mesa
+     ("Galería fotográfica • …"). Para cambiarlo, edita este valor. */
+  --cover-title: #721e18;
+
+  /* Las dos opciones de la clienta para los textos claros de la portada */
+  --cover-yellow: #f8dfa9; /* crema/amarillo, el mismo del interior */
+  --cover-gold: #c38d5a;   /* dorado metálico */
+
+  /* Color en uso para CAMERA, 2026, "Portafolio", la frase, el botón
+     SIGUIENTE y el marco de las fotos chicas.
+     Para tomar capturas de cada versión cambia SOLO esta línea:
+       --active-cover-color: var(--cover-yellow);  → versión crema
+       --active-cover-color: var(--cover-gold);    → versión dorada
+     Guarda y recarga la página (F5). */
+  --active-cover-color: var(--cover-gold);
   --display: "Instrument Serif", var(--serif);
   --script: "Pinyon Script", cursive;
   --typewriter: "Courier Prime", "Courier New", monospace; /* galería boudoir */
@@ -192,11 +209,10 @@ body {
   display: none;
 }
 
-/* Sobre la foto de portada: más visible y con sombra para leerse */
-.page-cover .page-nav button {
-  color: #fff;
-  opacity: 0.85;
-  text-shadow: 0 0 0.6em rgba(0, 0, 0, 0.5);
+/* La portada usa su propio botón SIGUIENTE (.cover-next) en el bloque
+   de "Portafolio"; el de la navegación general saldría repetido. */
+.page-cover .page-nav {
+  display: none;
 }
 
 .kicker {
@@ -248,7 +264,11 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 60% 30%;
+  /* Centrado, como en el diseño de la clienta (1000036214.png): la foto
+     es 2:3 y su diseño A4 recorta ~3% arriba y abajo. En móvil (A4) queda
+     igual; en doble página (1:1.3) se recorta un poco más, pero repartido,
+     para no perder la mesa de abajo. */
+  object-position: 50% 50%;
   z-index: 0;
 }
 
@@ -259,7 +279,7 @@ body {
   right: 0;
   z-index: 1;
   margin: 0;
-  color: var(--bg);
+  color: var(--cover-title);
   text-align: center;
   font-family: var(--display);
   font-weight: 400;
@@ -271,103 +291,138 @@ body {
   transform-origin: top;
 }
 
-.cover-tag,
-.cover-caption {
-  font-family: var(--sans);
-  font-size: 0.95em;
-  text-transform: uppercase;
-  text-shadow: 0 0 0.6em rgba(255, 255, 255, 0.35);
-}
-
+/* CAMERA arriba de 2026, alineados a la derecha bajo el título, como en
+   el diseño de la clienta (Imagenes/revision2/1000036214.png). */
 .cover-tag {
   position: absolute;
-  top: 24%;
+  right: 5.5%;
   z-index: 3;
-  letter-spacing: 0.04em;
+  color: var(--active-cover-color);
+  font-family: var(--sans);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  /* sombra oscura: sin ella el dorado se pierde sobre la cortina clara */
+  text-shadow: 0 0 0.3em rgba(0, 0, 0, 0.6), 0 0.05em 0.8em rgba(0, 0, 0, 0.5);
 }
 
-.cover-tag-left  { left: 6.5%; }
-.cover-tag-right { right: 7.5%; }
+.cover-tag-name { top: 23.5%; font-size: 1.6em; font-weight: 500; }
+.cover-tag-year { top: 29%; right: 6%; font-size: 1.15em; font-weight: 400; }
 
+/* Ocupa toda la portada: las fotos chicas se ubican con % de la página */
 .cover-stack {
   position: absolute;
-  left: 0;
-  top: 33%;
-  width: 38%;
-  height: 44%;
+  inset: 0;
   z-index: 2;
+  pointer-events: none;
 }
 
 .cover-stack img {
   position: absolute;
   object-fit: cover;
-  border: 0.15em solid #fff;
+  border: 0.15em solid var(--active-cover-color);
   box-shadow: 0 0.4em 1.2em rgba(0, 0, 0, 0.35);
 }
 
+/* Debajo del brazo de la modelo, escalonadas (la segunda un poco más a la
+   derecha) y sin encimarse, como en el diseño de la clienta. */
 .stack-back {
-  left: 35%;
-  top: 0;
-  width: 64%;
-  height: 59%;
-  z-index: 1;
+  left: 5.5%;
+  top: 47%;
+  width: 20%;
+  height: 19%;
 }
 
 .stack-front {
-  left: 0;
-  top: 38%;
-  width: 59%;
-  height: 61%;
-  z-index: 2;
+  left: 13%;
+  top: 68.5%;
+  width: 19%;
+  height: 19%;
 }
 
+/* Sin text-transform: el formato mixto (minúsculas • MAYÚSCULAS) es
+   el que pidió la clienta y viene escrito así en el HTML.
+   El tamaño está medido para que la línea termine antes del vestido
+   (≈ 48% del ancho) y no se pierda el vino sobre el vino. */
 .cover-caption {
   position: absolute;
-  left: 3%;
-  bottom: 3%;
-  width: 22%;
+  left: 2%;
+  bottom: 1%; /* sobre la mesa: más arriba se perdía contra la cortina */
   z-index: 3;
-  text-align: center;
-  line-height: 1.15;
-}
-
-.cover-caption p {
   margin: 0;
+  color: var(--cover-title);
+  font-family: var(--sans);
+  font-size: 0.52em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
-.cover-caption p + p {
-  margin-top: 1.6em;
-}
-
+/* Bloque inferior sobre el vestido (diseño de la clienta): "Portafolio"
+   en script, la frase y el botón Siguiente, centrados entre sí. El
+   vestido oscuro da contraste a cualquiera de los dos colores. */
 .cover-signature {
   position: absolute;
-  right: 6%;
-  bottom: 9%;
-  width: 42%;
-  height: 16%;
+  right: 1%;
+  bottom: 4%;
+  width: 48%;
   z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--active-cover-color);
+  text-align: center;
+  text-shadow: 0 0.05em 0.5em rgba(0, 0, 0, 0.5);
 }
 
 .cover-script {
-  position: absolute;
-  left: 0;
-  top: 0;
+  margin: 0;
   font-family: var(--script);
-  font-size: 3.6em;
-  line-height: 1;
+  font-size: 3.4em;
+  font-weight: 400;
+  line-height: 1.1;
   white-space: nowrap;
-  transform: rotate(-8deg);
 }
 
-.cover-vol {
-  position: absolute;
-  right: 12%;
-  bottom: 0;
-  font-family: var(--display);
-  font-size: 2.2em;
-  line-height: 1;
-  transform: scaleY(1.3);
-  transform-origin: bottom;
+.cover-tagline {
+  margin: 0.2em 0 0;
+  font-family: var(--serif);
+  font-size: 0.62em;
+  line-height: 1.7;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.cover-next {
+  margin-top: 1.4em;
+  padding: 0.4em 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: var(--sans);
+  font-size: 0.62em;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-shadow: inherit;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+.cover-next i {
+  margin-left: 0.6em;
+}
+
+.cover-next:hover,
+.cover-next:focus-visible {
+  opacity: 1;
+  transform: translateX(0.3em);
+}
+
+.cover-next:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
 }
 
 /* ---------- Páginas 2 y 3: Boudoir / Retrato ----------
@@ -456,9 +511,9 @@ body {
   background-color: var(--placeholder);
 }
 
-/* ---------- Galerías (págs. 4 a 27) ----------
+/* ---------- Galerías (págs. 4 a 29) ----------
    Boudoir (4–16) y Retrato (17–24) replican los bocetos de la clienta
-   (Imagenes/Galeria/BOUDOIR y Retrato); la masculina (25–27) usa las
+   (Imagenes/Galeria/BOUDOIR y Retrato); la masculina (25–29) usa las
    mismas piezas (.bd-photo, .bd-word) con diseño propio. Son
    collages libres, así que fotos y textos van en posición absoluta con
    porcentajes de la página: turn.js solo cambia el tamaño y el acomodo se
@@ -553,8 +608,10 @@ body {
 .bd-02 .bd-p1 { left: 18.5%; top: 6%; width: 63.5%; height: 74%; }
 .bd-02 .bd-t1 { left: 0; right: 0; top: 82.5%; text-align: center; font-size: 1.6em; line-height: 1.25; }
 
-/* Pág. 6 — Impaciente (vertical a la derecha) */
-.bd-03 .bd-p1 { left: 23%; top: 12%; width: 58%; height: 72%; }
+/* Pág. 6 — Impaciente (vertical a la derecha). width: auto deja a la foto
+   su proporción natural (4:5): con una caja más angosta, cover le cortaba
+   el estómago a la orilla izquierda. */
+.bd-03 .bd-p1 { left: 8%; top: 16%; width: auto; height: 64%; }
 .bd-03 .bd-t1 { left: 88%; top: 48%; font-size: 1.5em; transform: translateY(-50%) rotate(180deg); }
 
 /* Pág. 7 — Deleite */
@@ -679,10 +736,11 @@ body {
   transform-origin: 50% 98%;
 }
 
-/* Pág. 24 — solo foto */
-.rt-08 .bd-p1 { left: 21.4%; top: 13%; width: 61.1%; height: 73.3%; }
+/* Pág. 24 — Umbral */
+.rt-08 .bd-p1 { left: 21.4%; top: 8%; width: 61.1%; height: 73.3%; }
+.rt-08 .bd-t1 { left: 0; right: 0; top: 86%; text-align: center; font-size: 1.6em; }
 
-/* --- Retrato masculino (págs. 25 a 27) ---
+/* --- Retrato masculino (págs. 25 a 29) ---
    Diseño propio: títulos grandes en Instrument Serif con pies en la
    tipografía de máquina de escribir de las otras galerías, fondos oscuros
    cálidos y fotos encimadas en escalonado asimétrico. */
@@ -716,28 +774,38 @@ body {
 .bg-carbon .bd-photo { box-shadow: 0 0 0 0.3em var(--carbon), 0 0.6em 1.4em rgba(0, 0, 0, 0.5); }
 .bg-taupe .bd-photo { box-shadow: 0 0 0 0.3em var(--taupe), 0 0.6em 1.4em rgba(0, 0, 0, 0.4); }
 
-/* Pág. 25 — Tinta & humo: retrato a sangre a la izquierda */
-.hm-01 .bd-p1 { left: 0; top: 0; width: 46%; height: 100%; box-shadow: none; }
-.hm-01 .hm-title { left: 52%; top: 7%; }
-.hm-01 .bd-p2 { left: 52%; top: 28%; width: 36%; height: 33%; }
-.hm-01 .bd-p3 { left: 60%; top: 57%; width: 33%; height: 33%; z-index: 2; }
-.hm-01 .hm-cap { left: 93.5%; top: 6%; }
+/* Las fotos que van solas usan width: auto para conservar su proporción
+   natural (sin recorte) y se centran con translateX. */
 
-/* Pág. 26 — Temple */
-.hm-02 .bd-p1 { left: 6%; top: 6%; width: 38%; height: 43%; }
-.hm-02 .bd-p2 { left: 50%; top: 6%; width: 44%; height: 62%; }
-.hm-02 .bd-p3 { left: 16%; top: 46%; width: 30%; height: 42%; z-index: 2; }
-.hm-02 .hm-title { left: 52%; top: 73%; }
-.hm-02 .hm-cap { left: 52.5%; top: 84%; }
+/* Pág. 25 — Esencia: el retrato solo, el título debajo sin tocar el rostro */
+.hm-01 .bd-p1 { left: 50%; top: 6%; width: auto; height: 74%; transform: translateX(-50%); }
+.hm-01 .hm-title { left: 0; right: 0; top: 84%; text-align: center; }
 
-/* Pág. 27 — Presencia: panorámica y tres verticales escalonadas */
-.hm-03 .hm-title { left: 6%; top: 4.5%; font-size: 3.4em; }
-.hm-03 .bd-p1 { left: 6%; top: 14%; width: 88%; height: 34%; object-position: 50% 18%; /* encuadra el rostro */ }
-.hm-03 .bd-p2 { left: 6%; top: 52%; width: 27%; height: 36%; }
-.hm-03 .bd-p3 { left: 36.5%; top: 55%; width: 27%; height: 36%; }
-.hm-03 .bd-p4 { left: 67%; top: 52%; width: 27%; height: 36%; }
+/* Pág. 26 — Tinta & humo: las dos fotos fumando, escalonadas */
+.hm-02 .hm-title { left: 7%; top: 6%; }
+.hm-02 .hm-cap { left: 7.5%; top: 25%; }
+.hm-02 .bd-p1 { left: 7%; top: 32%; width: 41%; height: 48%; }
+.hm-02 .bd-p2 { left: 52%; top: 41%; width: 41%; height: 48%; }
 
-/* ---------- Páginas 28 y 29: Paquetes y precios ---------- */
+/* Pág. 27 — Temple */
+.hm-03 .bd-p1 { left: 6%; top: 6%; width: 38%; height: 43%; }
+.hm-03 .bd-p2 { left: 50%; top: 6%; width: 44%; height: 62%; }
+.hm-03 .bd-p3 { left: 16%; top: 46%; width: 30%; height: 42%; z-index: 2; }
+.hm-03 .hm-title { left: 52%; top: 73%; }
+.hm-03 .hm-cap { left: 52.5%; top: 84%; }
+
+/* Pág. 28 — Escalinata: foto completa con el marco de postal de la galería */
+.hm-04 .bd-p1 { left: 50%; top: 7%; width: auto; height: 84%; transform: translateX(-50%); }
+
+/* Pág. 29 — Presencia: tres verticales escalonadas. Sin el marco de postal:
+   sobre el fondo carbón dejaba orillas oscuras raras (nota de la clienta). */
+.hm-05 .hm-title { left: 6%; top: 5%; font-size: 3.4em; }
+.hm-05 .bd-photo { box-shadow: 0 0.6em 1.4em rgba(0, 0, 0, 0.5); }
+.hm-05 .bd-p1 { left: 5%; top: 29%; width: 29%; height: 39%; }
+.hm-05 .bd-p2 { left: 35.5%; top: 39%; width: 29%; height: 39%; }
+.hm-05 .bd-p3 { left: 66%; top: 29%; width: 29%; height: 39%; }
+
+/* ---------- Páginas 30 y 31: Paquetes y precios ---------- */
 
 .prices-header {
   text-align: center;
@@ -807,12 +875,31 @@ body {
   align-self: stretch;
 }
 
-.prices-photo {
+/* Columna de la foto con el botón "Continuar viendo galería" debajo */
+.prices-media {
   flex: 0 0 42%;
   width: 42%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+}
+
+.prices-photo {
+  display: block;
+  width: 100%;
   height: 17em;
   object-fit: cover;
   object-position: center 25%;
+}
+
+/* El texto es largo para la columna: se parte en dos líneas antes que
+   desbordar. */
+.btn-continue {
+  padding: 1em 0.8em;
+  font-size: 0.5em;
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+  text-align: center;
 }
 
 /* Columna angosta: el precio baja bajo el nombre, la lista va en una
@@ -1194,10 +1281,19 @@ body {
     gap: 1em;
   }
 
-  .prices-photo {
+  .prices-media {
     flex-basis: 36%;
     width: 36%;
+  }
+
+  .prices-photo {
     height: 15em;
+  }
+
+  .prices-media .btn-continue {
+    padding: 0.9em 0.4em;
+    font-size: 0.62em;
+    letter-spacing: 0.08em;
   }
 
   .prices-body .btn-reserve {
