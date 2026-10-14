@@ -511,7 +511,7 @@ body {
   background-color: var(--placeholder);
 }
 
-/* ---------- Galerías (págs. 4 a 29) ----------
+/* ---------- Galerías (págs. 4 a 33) ----------
    Boudoir (4–16) y Retrato (17–24) replican los bocetos de la clienta
    (Imagenes/Galeria/BOUDOIR y Retrato); la masculina (25–29) usa las
    mismas piezas (.bd-photo, .bd-word) con diseño propio. Son
@@ -608,17 +608,17 @@ body {
 .bd-02 .bd-p1 { left: 18.5%; top: 6%; width: 63.5%; height: 74%; }
 .bd-02 .bd-t1 { left: 0; right: 0; top: 82.5%; text-align: center; font-size: 1.6em; line-height: 1.25; }
 
-/* Pág. 6 — Impaciente (vertical a la derecha). width: auto deja a la foto
+/* Pág. 8 — Impaciente (vertical a la derecha). width: auto deja a la foto
    su proporción natural (4:5): con una caja más angosta, cover le cortaba
    el estómago a la orilla izquierda. */
 .bd-03 .bd-p1 { left: 8%; top: 16%; width: auto; height: 64%; }
 .bd-03 .bd-t1 { left: 88%; top: 48%; font-size: 1.5em; transform: translateY(-50%) rotate(180deg); }
 
-/* Pág. 7 — Deleite */
+/* Pág. 10 — Deleite */
 .bd-04 .bd-p1 { left: 15.5%; top: 7%; width: 67%; height: 77%; }
 .bd-04 .bd-t1 { left: 0; right: 0; top: 87%; text-align: center; font-size: 1.8em; }
 
-/* Pág. 8 — Sutil / Tierno. La mitad crema es un pseudo-elemento recortado
+/* Pág. 11 — Sutil / Tierno. La mitad crema es un pseudo-elemento recortado
    en diagonal; los textos se inclinan siguiendo esa línea. */
 .bd-05::before {
   content: "";
@@ -639,7 +639,7 @@ body {
   color: var(--vino);
 }
 
-/* Pág. 9 — Seductor / En vol vente */
+/* Pág. 12 — Seductor / En vol vente */
 .bd-06 .bd-t1 { left: 0; right: 0; top: 4%; text-align: center; font-size: 2.2em; }
 .bd-06 .bd-p1 { left: 10.5%; top: 14%; width: 32%; height: 38%; }
 .bd-06 .bd-p2 { left: 55.5%; top: 17%; width: 31.5%; height: 37.5%; }
@@ -648,29 +648,29 @@ body {
 .bd-06 .bd-t2 span { display: block; }
 .bd-06 .bd-t2 span + span { padding-left: 0.6em; }
 
-/* Pág. 10 — vulnerable */
+/* Pág. 13 — vulnerable */
 .bd-07 .bd-p1 { left: 5.5%; top: 30%; width: 89%; height: 47.5%; }
 .bd-07 .bd-t1 { left: 0; right: 0; top: 86%; text-align: center; font-size: 1.9em; letter-spacing: 0.15em; text-transform: none; }
 
-/* Pág. 11 — Envolvente */
+/* Pág. 14 — Envolvente */
 .bd-08 .bd-p1 { left: 15.5%; top: 6.5%; width: 67%; height: 78%; }
 .bd-08 .bd-t1 { left: 0; right: 0; top: 88%; text-align: center; font-size: 1.5em; }
 
-/* Pág. 12 — Deseo (foto pendiente) */
+/* Pág. 15 — Deseo (foto pendiente) */
 .bd-09 .bd-t1 { left: 0; right: 0; top: 11%; text-align: center; font-size: 2em; }
 .bd-09 .bd-p1 { left: 9%; top: 28%; width: 82%; height: 44%; }
 
-/* Pág. 13 — Con-pla / cer (vertical) y Soberana */
+/* Pág. 16 — Con-pla / cer (vertical) y Soberana */
 .bd-10 .bd-p1 { left: 5%; top: 4%; width: 46%; height: 55.5%; }
 .bd-10 .bd-t1 { right: 9%; top: 6%; font-size: 3.2em; line-height: 1.25; }
 .bd-10 .bd-t2 { left: 14%; top: 64%; font-size: 1.7em; }
 .bd-10 .bd-p2 { left: 35.5%; top: 64%; width: 61%; height: 28%; }
 
-/* Pág. 14 — Intachable */
+/* Pág. 17 — Intachable */
 .bd-11 .bd-t1 { left: 0; right: 0; top: 4.5%; text-align: center; font-size: 2.2em; }
 .bd-11 .bd-p1 { left: 20.5%; top: 17.5%; width: 58.5%; height: 70%; }
 
-/* Pág. 15 — EX + otico / tasis */
+/* Pág. 18 — EX + otico / tasis */
 .bd-12 .bd-t1,
 .bd-12 .bd-t2 { font-size: 2em; letter-spacing: 0.15em; text-transform: none; }
 .bd-12 .bd-t1 { left: 10%; top: 13.5%; }
@@ -679,42 +679,59 @@ body {
 .bd-12 .bd-p2 { left: 56.3%; top: 29%; width: 37.2%; height: 44.5%; }
 .bd-12 .bd-t3 { left: 8.5%; top: 79%; font-size: 5.2em; letter-spacing: 0.1em; }
 
-/* Pág. 16 — Sabor / Tropical */
+/* Pág. 19 — Sabor / Tropical */
 .bd-13 .bd-t1 { left: 7%; top: 3.5%; font-size: 2.2em; }
 .bd-13 .bd-p1 { left: 21.5%; top: 13.5%; width: 57%; height: 68%; }
 .bd-13 .bd-t2 { right: 4%; top: 85%; font-size: 2em; }
 
-/* --- Galería Retrato (págs. 17 a 24) --- */
+/* Págs. 6, 7 y 9 — sin boceto de la clienta. Las fotos van solas con
+   width: auto (proporción natural, sin recorte) como Impaciente, y se
+   acomodan distinto en cada página para no repetir el mismo esquema. */
 
-/* Pág. 18 — Magnética / Atracción */
+/* Pág. 6 — Hipnótica: foto centrada y palabra abajo, como Permanente */
+.bd-14 .bd-p1 { left: 50%; top: 6%; width: auto; height: 76%; transform: translateX(-50%); }
+.bd-14 .bd-t1 { left: 0; right: 0; top: 87%; text-align: center; font-size: 1.8em; }
+
+/* Pág. 7 — Natural: hace espejo con la 6 en el pliego, foto a la izquierda
+   y la palabra vertical a la derecha (de arriba hacia abajo) */
+.bd-15 .bd-p1 { left: 7%; top: 8%; width: auto; height: 80%; }
+.bd-15 .bd-t1 { left: 84%; top: 50%; font-size: 2.6em; transform: translateY(-50%); }
+
+/* Pág. 9 — Húmedo: palabra arriba y foto debajo, como Intachable */
+.bd-16 .bd-t1 { left: 0; right: 0; top: 4.5%; text-align: center; font-size: 2.2em; }
+.bd-16 .bd-p1 { left: 50%; top: 15%; width: auto; height: 76%; transform: translateX(-50%); }
+
+/* --- Galería Retrato (págs. 20 a 26) --- */
+
+/* Pág. 21 — Magnética / Atracción */
 .rt-01 .bd-p1 { left: 2.6%; top: 5.4%; width: 50.4%; height: 54%; }
 .rt-01 .bd-t1 { left: 77%; top: 27%; font-size: 1.5em; transform: translate(-50%, -50%); }
 .rt-01 .bd-t2 { left: 28%; top: 77%; font-size: 1.6em; line-height: 1.5; text-align: center; transform: translate(-50%, -50%); }
 .rt-01 .bd-p2 { left: 57.4%; top: 54%; width: 39.8%; height: 39%; }
 
-/* Pág. 17 — Resiliente: abre la galería con el rótulo "Retrato femenino",
+/* Pág. 20 — Resiliente: abre la galería con el rótulo "Retrato femenino",
    el mismo estilo que "Retrato masculino" en Tinta & humo (Revisión 3). */
 .rt-02 .bd-t1 { left: 0; right: 0; top: 7.5%; text-align: center; font-size: 2.3em; }
 .rt-02 .hm-cap { left: 0; right: 0; top: 14.5%; text-align: center; padding-left: 0.3em; opacity: 0.85; }
 .rt-02 .bd-p1 { left: 19.7%; top: 20%; width: 61.3%; height: 72%; }
 
-/* Pág. 19 — Imparable (vertical, de arriba hacia abajo) */
+/* Pág. 22 — Imparable (vertical, de arriba hacia abajo) */
 .rt-03 .bd-p1 { left: 3.9%; top: 7%; width: 71.7%; height: 85%; }
 .rt-03 .bd-t1 { left: 84%; top: 50%; font-size: 3.2em; transform: translateY(-50%); }
 
-/* Pág. 20 — Auténtica */
+/* Pág. 23 — Auténtica */
 .rt-04 .bd-p1 { left: 27%; top: 7.2%; width: 60.6%; height: 72.6%; }
 .rt-04 .bd-t1 { left: 4.5%; top: 84%; font-size: 2.2em; }
 
-/* Pág. 21 — Revelador */
+/* Pág. 24 — Revelador */
 .rt-05 .bd-p1 { left: 17.3%; top: 9%; width: 60.3%; height: 72.4%; }
 .rt-05 .bd-t1 { left: 0; right: 0; top: 86%; text-align: center; font-size: 2.1em; padding-left: 0.4em; }
 
-/* Pág. 22 — Desafiante */
+/* Pág. 25 — Desafiante */
 .rt-06 .bd-p1 { left: 18.5%; top: 9%; width: 64.2%; height: 76%; }
 .rt-06 .bd-t1 { left: 0; right: 0; top: 88%; text-align: center; font-size: 1.9em; }
 
-/* Pág. 23 — Esperanza: foto grande a sangre por la derecha y, abajo, un
+/* Pág. 30 — Esperanza: foto grande a sangre por la derecha y, abajo, un
    acercamiento de la misma toma (el contenedor recorta la foto escalada;
    transform-origin apunta a la mano con el reloj). */
 .rt-07 .bd-p1 { left: 33.6%; top: 1.8%; width: 66.4%; height: 66%; }
@@ -731,11 +748,11 @@ body {
   transform-origin: 50% 98%;
 }
 
-/* Pág. 24 — Umbral */
+/* Pág. 26 — Umbral */
 .rt-08 .bd-p1 { left: 21.4%; top: 8%; width: 61.1%; height: 73.3%; }
 .rt-08 .bd-t1 { left: 0; right: 0; top: 86%; text-align: center; font-size: 1.6em; }
 
-/* --- Retrato masculino (págs. 25 a 29) ---
+/* --- Retrato masculino (págs. 27 a 33) ---
    Diseño propio: títulos grandes en Instrument Serif con pies en la
    tipografía de máquina de escribir de las otras galerías, fondos oscuros
    cálidos y fotos encimadas en escalonado asimétrico. */
@@ -772,27 +789,27 @@ body {
 /* Las fotos que van solas usan width: auto para conservar su proporción
    natural (sin recorte) y se centran con translateX. */
 
-/* Pág. 26 — Esencia: el retrato solo, el título debajo sin tocar el rostro */
+/* Pág. 28 — Esencia: el retrato solo, el título debajo sin tocar el rostro */
 .hm-01 .bd-p1 { left: 50%; top: 6%; width: auto; height: 74%; transform: translateX(-50%); }
 .hm-01 .hm-title { left: 0; right: 0; top: 84%; text-align: center; }
 
-/* Pág. 25 — Tinta & humo (abre el retrato masculino): las dos fotos fumando, escalonadas */
+/* Pág. 27 — Tinta & humo (abre el retrato masculino): las dos fotos fumando, escalonadas */
 .hm-02 .hm-title { left: 7%; top: 6%; }
 .hm-02 .hm-cap { left: 7.5%; top: 25%; }
 .hm-02 .bd-p1 { left: 7%; top: 32%; width: 41%; height: 48%; }
 .hm-02 .bd-p2 { left: 52%; top: 41%; width: 41%; height: 48%; }
 
-/* Pág. 27 — Temple */
+/* Pág. 29 — Temple */
 .hm-03 .bd-p1 { left: 6%; top: 6%; width: 38%; height: 43%; }
 .hm-03 .bd-p2 { left: 50%; top: 6%; width: 44%; height: 62%; }
 .hm-03 .bd-p3 { left: 16%; top: 46%; width: 30%; height: 42%; z-index: 2; }
 .hm-03 .hm-title { left: 52%; top: 73%; }
 .hm-03 .hm-cap { left: 52.5%; top: 84%; }
 
-/* Pág. 28 — Escalinata: foto completa con el marco de postal de la galería */
+/* Pág. 31 — Escalinata: foto completa con el marco de postal de la galería */
 .hm-04 .bd-p1 { left: 50%; top: 7%; width: auto; height: 84%; transform: translateX(-50%); }
 
-/* Pág. 29 — Presencia: tres verticales escalonadas. Sin el marco de postal:
+/* Pág. 33 — Presencia: tres verticales escalonadas. Sin el marco de postal:
    sobre el fondo carbón dejaba orillas oscuras raras (nota de la clienta). */
 .hm-05 .hm-title { left: 6%; top: 5%; font-size: 3.4em; }
 .hm-05 .bd-photo { box-shadow: 0 0.6em 1.4em rgba(0, 0, 0, 0.5); }
@@ -800,7 +817,20 @@ body {
 .hm-05 .bd-p2 { left: 35.5%; top: 39%; width: 29%; height: 39%; }
 .hm-05 .bd-p3 { left: 66%; top: 29%; width: 29%; height: 39%; }
 
-/* ---------- Páginas 30 y 31: Paquetes y precios ---------- */
+/* Pág. 32 — Auténtico: el retrato solo y grande, cargado a la derecha con
+   el marco de postal, y el título vertical en la franja izquierda (se lee
+   de abajo hacia arriba). Así no se parece a Presencia, que va enfrente
+   con el título horizontal arriba. */
+.hm-06 .bd-p1 { right: 5%; top: 7%; width: auto; height: 78%; }
+.hm-06 .hm-title {
+  left: 7%;
+  top: 47%;
+  font-size: 3.8em;
+  writing-mode: vertical-rl;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* ---------- Páginas 34 y 35: Paquetes y precios ---------- */
 
 .prices-header {
   text-align: center;
@@ -1140,7 +1170,7 @@ body {
   color: var(--ink-soft);
 }
 
-/* ---------- Página 8: Contraportada ---------- */
+/* ---------- Página 36: Contraportada ---------- */
 
 #magazine .page-back {
   background-color: var(--ink);

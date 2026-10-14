@@ -167,7 +167,7 @@ $(function () {
     if ($(this).hasClass('btn-paquetes')) {
       paginaOrigen = $pages.index($(this).closest('.page')) + 1;
     }
-    // "Continuar viendo galería" lleva al inicio de la galería (17 Retrato,
+    // "Continuar viendo galería" lleva al inicio de la galería (20 Retrato,
     // 04 Boudoir): ahí Volver ya no debe regresar a la intro de origen.
     if ($(this).hasClass('btn-continue')) {
       paginaOrigen = null;
