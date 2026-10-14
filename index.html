@@ -107,14 +107,12 @@
         <span class="page-number">07</span>
       </div>
 
-      <!-- Página 8 (boceto 5): fondo partido en diagonal vino / crema. Falta
-           la foto de TIERNO (no la entregaron): cambiar el placeholder por
-           <img class="bd-photo bd-p2" …> cuando llegue. -->
+      <!-- Página 8 (boceto 5): fondo partido en diagonal vino / crema -->
       <div class="page bg-vino boudoir bd-05">
         <img class="bd-photo bd-p1" src="./assets/images/modelo-4/foto-3_.webp" alt="Sesión boudoir de encaje de espaldas" loading="lazy" decoding="async">
         <p class="bd-word bd-t1">Sutil</p>
         <p class="bd-word bd-t2">Tierno</p>
-        <div class="bd-photo bd-p2 img-placeholder" role="img" aria-label="Foto pendiente"></div>
+        <img class="bd-photo bd-p2" src="./assets/images/fotos-faltantes/20260921_203152.webp" alt="Sesión boudoir en encaje azul sentada junto a la cama" loading="lazy" decoding="async">
         <span class="page-number">08</span>
       </div>
 
@@ -187,19 +185,21 @@
            la clienta (Imagenes/Galeria/Retrato/1-8.jpg); posiciones en
            styles.css (.rt-01 … .rt-08). -->
 
-      <!-- Página 17 (boceto 1) -->
+      <!-- Página 17 (boceto 2): abre la galería, por eso lleva el rótulo
+           "Retrato femenino" (Revisión 3: va antes que Magnética) -->
+      <div class="page bg-crema rt rt-02">
+        <p class="bd-word bd-t1">Resiliente</p>
+        <p class="hm-cap">Retrato femenino</p>
+        <img class="bd-photo bd-p1" src="./assets/images/modelo-1/dsc4898.webp" alt="Retrato con vestido blanco de encaje en el balcón" loading="lazy" decoding="async">
+        <span class="page-number">17</span>
+      </div>
+
+      <!-- Página 18 (boceto 1) -->
       <div class="page bg-vino rt rt-01">
         <img class="bd-photo bd-p1" src="./assets/images/modelo-5/dsc5817.webp" alt="Retrato con vestido vino junto a la ventana" loading="lazy" decoding="async">
         <p class="bd-word bd-t1">Magnética</p>
         <p class="bd-word bd-t2">Atra<br>cció<br>n</p>
         <img class="bd-photo bd-p2" src="./assets/images/modelo-5/20260925_184027.webp" alt="Retrato con vestido vino frente al espejo" loading="lazy" decoding="async">
-        <span class="page-number">17</span>
-      </div>
-
-      <!-- Página 18 (boceto 2) -->
-      <div class="page bg-crema rt rt-02">
-        <p class="bd-word bd-t1">Resiliente</p>
-        <img class="bd-photo bd-p1" src="./assets/images/modelo-1/dsc4898.webp" alt="Retrato con vestido blanco de encaje en el balcón" loading="lazy" decoding="async">
         <span class="page-number">18</span>
       </div>
 
@@ -253,20 +253,21 @@
            Son 5 (impar) a propósito: así los precios de Retrato caen en
            página par (izquierda) y quedan frente a los de Boudoir. -->
 
-      <!-- Página 25: Esencia. El retrato va solo y el título debajo para
-           no taparle el rostro (pedido de la clienta). -->
-      <div class="page bg-carbon hm hm-01">
-        <img class="bd-photo bd-p1" src="./assets/images/modelo-f/ddc4c7de-187a-408a-b9b2-0e1f5cb2bc02.webp" alt="Retrato de hombre con tatuajes en el rostro" loading="lazy" decoding="async">
-        <h2 class="hm-title">Esencia</h2>
-        <span class="page-number">25</span>
-      </div>
-
-      <!-- Página 26: Tinta & humo, las dos fotos fumando -->
+      <!-- Página 25: Tinta & humo, las dos fotos fumando. Abre la sección
+           porque lleva el rótulo "Retrato masculino" (Revisión 3). -->
       <div class="page bg-carbon hm hm-02">
         <h2 class="hm-title">Tinta<br>&amp; humo</h2>
         <p class="hm-cap">Retrato masculino</p>
         <img class="bd-photo bd-p1" src="./assets/images/modelo-f/dsc4758.webp" alt="Retrato de hombre tatuado fumando de perfil" loading="lazy" decoding="async">
         <img class="bd-photo bd-p2" src="./assets/images/modelo-f/jpg.webp" alt="Retrato de hombre tatuado fumando en penumbra" loading="lazy" decoding="async">
+        <span class="page-number">25</span>
+      </div>
+
+      <!-- Página 26: Esencia. El retrato va solo y el título debajo para
+           no taparle el rostro (pedido de la clienta). -->
+      <div class="page bg-carbon hm hm-01">
+        <img class="bd-photo bd-p1" src="./assets/images/modelo-f/ddc4c7de-187a-408a-b9b2-0e1f5cb2bc02.webp" alt="Retrato de hombre con tatuajes en el rostro" loading="lazy" decoding="async">
+        <h2 class="hm-title">Esencia</h2>
         <span class="page-number">26</span>
       </div>
 
@@ -390,7 +391,7 @@
           </div>
           <div class="prices-media">
             <img class="prices-photo" src="./assets/images/modelo-l/foto-6.webp" alt="Sesión de retrato en exterior">
-            <a href="#" class="btn-outline btn-continue" data-goto="3">Continuar viendo galería Retrato &rsaquo;</a>
+            <a href="#" class="btn-outline btn-continue" data-goto="17">Continuar viendo galería Retrato &rsaquo;</a>
           </div>
         </div>
 
@@ -415,7 +416,7 @@
         <div class="prices-body">
           <div class="prices-media">
             <img class="prices-photo" src="./assets/images/modelo-5/20260927_154553.webp" alt="Sesión boudoir">
-            <a href="#" class="btn-outline btn-continue" data-goto="2">Continuar viendo galería Boudoir &rsaquo;</a>
+            <a href="#" class="btn-outline btn-continue" data-goto="4">Continuar viendo galería Boudoir &rsaquo;</a>
           </div>
           <div class="accordion">
             <details name="boudoir" open>

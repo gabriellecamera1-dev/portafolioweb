@@ -129,7 +129,7 @@ $(function () {
   // Navegación integrada. Se corta mousedown/touchstart para que turn.js
   // no lo tome como el inicio de un arrastre de esquina (los botones
   // están justo en las esquinas inferiores) y pase dos páginas.
-  $magazine.on('mousedown touchstart', '.page-nav button, .cover-next', function (e) {
+  $magazine.on('mousedown touchstart', '.page-nav button, .cover-next, [data-goto]', function (e) {
     e.stopPropagation();
   });
 
@@ -166,6 +166,11 @@ $(function () {
     // turn('page'): en doble página turn.js puede dar la otra del pliego.
     if ($(this).hasClass('btn-paquetes')) {
       paginaOrigen = $pages.index($(this).closest('.page')) + 1;
+    }
+    // "Continuar viendo galería" lleva al inicio de la galería (17 Retrato,
+    // 04 Boudoir): ahí Volver ya no debe regresar a la intro de origen.
+    if ($(this).hasClass('btn-continue')) {
+      paginaOrigen = null;
     }
     $magazine.turn('page', Number($(this).data('goto')));
   });

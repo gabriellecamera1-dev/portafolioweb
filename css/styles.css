@@ -25,17 +25,14 @@
      ("Galería fotográfica • …"). Para cambiarlo, edita este valor. */
   --cover-title: #721e18;
 
-  /* Las dos opciones de la clienta para los textos claros de la portada */
-  --cover-yellow: #f8dfa9; /* crema/amarillo, el mismo del interior */
-  --cover-gold: #c38d5a;   /* dorado metálico */
+  /* Las dos opciones que se probaron para los textos claros de la portada */
+  --cover-yellow: #efe0c8; /* crema: el definitivo (Revisión 3) */
+  --cover-gold: #c38d5a;   /* dorado metálico, descartado */
 
-  /* Color en uso para CAMERA, 2026, "Portafolio", la frase, el botón
-     SIGUIENTE y el marco de las fotos chicas.
-     Para tomar capturas de cada versión cambia SOLO esta línea:
-       --active-cover-color: var(--cover-yellow);  → versión crema
-       --active-cover-color: var(--cover-gold);    → versión dorada
-     Guarda y recarga la página (F5). */
-  --active-cover-color: var(--cover-gold);
+  /* Color de CAMERA, 2026, "Portafolio", la frase, el botón SIGUIENTE y
+     el marco de las fotos chicas. La clienta eligió el crema; el dorado se
+     conserva por si se quiere volver a comparar cambiando solo esta línea. */
+  --active-cover-color: var(--cover-yellow);
   --display: "Instrument Serif", var(--serif);
   --script: "Pinyon Script", cursive;
   --typewriter: "Courier Prime", "Courier New", monospace; /* galería boudoir */
@@ -283,11 +280,14 @@ body {
   text-align: center;
   font-family: var(--display);
   font-weight: 400;
-  font-size: 6.8em;
+  font-size: 6.2em; /* un poco más chico, pedido de la clienta (antes 6.8em) */
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  transform: scaleY(1.45);
+  /* Proporción de la referencia (Imagenes/Revision3/1000036320.png): la
+     palabra ocupa ~92% del ancho y el alto de las letras es ~0.21 del
+     ancho. Con 1.45 quedaba en ~0.27, demasiado estirada. */
+  transform: scaleY(1.15);
   transform-origin: top;
 }
 
@@ -306,8 +306,8 @@ body {
   text-shadow: 0 0 0.3em rgba(0, 0, 0, 0.6), 0 0.05em 0.8em rgba(0, 0, 0, 0.5);
 }
 
-.cover-tag-name { top: 23.5%; font-size: 1.6em; font-weight: 500; }
-.cover-tag-year { top: 29%; right: 6%; font-size: 1.15em; font-weight: 400; }
+.cover-tag-name { top: 18%; font-size: 1.6em; font-weight: 500; }
+.cover-tag-year { top: 23.5%; right: 6%; font-size: 1.15em; font-weight: 400; }
 
 /* Ocupa toda la portada: las fotos chicas se ubican con % de la página */
 .cover-stack {
@@ -639,13 +639,6 @@ body {
   color: var(--vino);
 }
 
-/* La foto pendiente de TIERNO cae sobre la parte crema: tonos de .bg-crema */
-.bd-05 .img-placeholder.bd-photo {
-  background-color: rgba(96, 13, 18, 0.05);
-  color: var(--ink-soft);
-  border-color: var(--line);
-}
-
 /* Pág. 9 — Seductor / En vol vente */
 .bd-06 .bd-t1 { left: 0; right: 0; top: 4%; text-align: center; font-size: 2.2em; }
 .bd-06 .bd-p1 { left: 10.5%; top: 14%; width: 32%; height: 38%; }
@@ -693,14 +686,16 @@ body {
 
 /* --- Galería Retrato (págs. 17 a 24) --- */
 
-/* Pág. 17 — Magnética / Atracción */
+/* Pág. 18 — Magnética / Atracción */
 .rt-01 .bd-p1 { left: 2.6%; top: 5.4%; width: 50.4%; height: 54%; }
 .rt-01 .bd-t1 { left: 77%; top: 27%; font-size: 1.5em; transform: translate(-50%, -50%); }
 .rt-01 .bd-t2 { left: 28%; top: 77%; font-size: 1.6em; line-height: 1.5; text-align: center; transform: translate(-50%, -50%); }
 .rt-01 .bd-p2 { left: 57.4%; top: 54%; width: 39.8%; height: 39%; }
 
-/* Pág. 18 — Resiliente */
+/* Pág. 17 — Resiliente: abre la galería con el rótulo "Retrato femenino",
+   el mismo estilo que "Retrato masculino" en Tinta & humo (Revisión 3). */
 .rt-02 .bd-t1 { left: 0; right: 0; top: 7.5%; text-align: center; font-size: 2.3em; }
+.rt-02 .hm-cap { left: 0; right: 0; top: 14.5%; text-align: center; padding-left: 0.3em; opacity: 0.85; }
 .rt-02 .bd-p1 { left: 19.7%; top: 20%; width: 61.3%; height: 72%; }
 
 /* Pág. 19 — Imparable (vertical, de arriba hacia abajo) */
@@ -777,11 +772,11 @@ body {
 /* Las fotos que van solas usan width: auto para conservar su proporción
    natural (sin recorte) y se centran con translateX. */
 
-/* Pág. 25 — Esencia: el retrato solo, el título debajo sin tocar el rostro */
+/* Pág. 26 — Esencia: el retrato solo, el título debajo sin tocar el rostro */
 .hm-01 .bd-p1 { left: 50%; top: 6%; width: auto; height: 74%; transform: translateX(-50%); }
 .hm-01 .hm-title { left: 0; right: 0; top: 84%; text-align: center; }
 
-/* Pág. 26 — Tinta & humo: las dos fotos fumando, escalonadas */
+/* Pág. 25 — Tinta & humo (abre el retrato masculino): las dos fotos fumando, escalonadas */
 .hm-02 .hm-title { left: 7%; top: 6%; }
 .hm-02 .hm-cap { left: 7.5%; top: 25%; }
 .hm-02 .bd-p1 { left: 7%; top: 32%; width: 41%; height: 48%; }
@@ -895,11 +890,18 @@ body {
 /* El texto es largo para la columna: se parte en dos líneas antes que
    desbordar. */
 .btn-continue {
+  border: 1.5px solid var(--wine); /* borde vino, como en el diseño (Revisión 3) */
+  color: var(--wine);
   padding: 1em 0.8em;
   font-size: 0.5em;
   letter-spacing: 0.16em;
   line-height: 1.5;
   text-align: center;
+}
+
+.btn-continue:hover {
+  background: var(--wine);
+  color: var(--paper);
 }
 
 /* Columna angosta: el precio baja bajo el nombre, la lista va en una
