@@ -1,3 +1,10 @@
+// Hoja de Google Sheets con los precios (Archivo → Compartir → Publicar en
+// la Web → CSV). Columnas: id,categoria,paquete,precio. Así la clienta
+// cambia precios sin tocar el código; los del HTML quedan de respaldo si
+// esta URL está vacía o la hoja no responde. Google tarda ~5 min en
+// reflejar los cambios en el CSV publicado.
+var GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGTWQxuLdKxQti8RNHOqpEOIO9-bIBYa6PU_TflUfwZrsnzhnqGmSaiL931pxRkL4VP0UeFnUzHsL0/pub?gid=0&single=true&output=csv';
+
 $(function () {
   var $magazine = $('#magazine');
   var PAGE_RATIO = 1.3; // alto / ancho de cada página
@@ -9,6 +16,108 @@ $(function () {
   // esto, Volver en los precios iba a la página anterior (la galería
   // masculina) en vez de regresar a la intro de donde vino la persona.
   var paginaOrigen = null;
+
+  // Separa el CSV en filas y celdas respetando comillas: Sheets entrecomilla
+  // las celdas con comas (p. ej. "$1,200") y duplica las comillas internas.
+  function parsearCSV(texto) {
+    var filas = [];
+    var fila = [];
+    var celda = '';
+    var enComillas = false;
+    for (var i = 0; i < texto.length; i++) {
+      var c = texto.charAt(i);
+      if (enComillas) {
+        if (c === '"' && texto.charAt(i + 1) === '"') { celda += '"'; i++; }
+        else if (c === '"') { enComillas = false; }
+        else { celda += c; }
+      } else if (c === '"') {
+        enComillas = true;
+      } else if (c === ',') {
+        fila.push(celda); celda = '';
+      } else if (c === '\n' || c === '\r') {
+        if (c === '\r' && texto.charAt(i + 1) === '\n') { i++; }
+        fila.push(celda); filas.push(fila); fila = []; celda = '';
+      } else {
+        celda += c;
+      }
+    }
+    if (celda !== '' || fila.length) { fila.push(celda); filas.push(fila); }
+    return filas;
+  }
+
+  // La clienta puede escribir 440, $440 o $440 MXN; solo importa el número.
+  function limpiarPrecio(valor) {
+    var n = parseFloat(String(valor).replace(/[^\d.]/g, ''));
+    return n > 0 ? n : null;
+  }
+
+  function formatearPrecio(n) {
+    return '$' + n.toLocaleString('es-MX') + ' MXN';
+  }
+
+  // Se guardan antes de iniciar turn.js: este saca del DOM las páginas
+  // lejanas (los precios, 34–35), y cuando llega el CSV un $('[data-precio-id]')
+  // ya no las encontraría. Los elementos separados se pueden editar igual.
+  var $preciosHtml = $('[data-precio-id]');
+  var $rangosHtml = $('[data-rango-categoria]');
+
+  function aplicarPrecios(texto) {
+    var filas = parsearCSV(texto);
+    if (filas.length < 2) { return; }
+
+    // Columnas por nombre, por si la clienta las reordena en la hoja.
+    var encabezado = $.map(filas[0], function (h) { return $.trim(h).toLowerCase(); });
+    var colId = $.inArray('id', encabezado);
+    var colCategoria = $.inArray('categoria', encabezado);
+    var colPrecio = $.inArray('precio', encabezado);
+    if (colId < 0 || colPrecio < 0) { return; }
+
+    var rangos = {};
+    for (var i = 1; i < filas.length; i++) {
+      var id = $.trim(filas[i][colId] || '');
+      var precio = limpiarPrecio(filas[i][colPrecio] || '');
+      // Fila incompleta o precio ilegible: se queda el del HTML.
+      if (!id || precio === null) { continue; }
+
+      $preciosHtml.filter('[data-precio-id="' + id + '"]').text(formatearPrecio(precio));
+
+      var categoria = colCategoria < 0 ? '' : $.trim(filas[i][colCategoria] || '').toLowerCase();
+      if (categoria) {
+        var r = rangos[categoria] || (rangos[categoria] = { min: precio, max: precio });
+        r.min = Math.min(r.min, precio);
+        r.max = Math.max(r.max, precio);
+      }
+    }
+
+    $.each(rangos, function (categoria, r) {
+      var texto = r.min === r.max
+        ? formatearPrecio(r.min)
+        : '$' + r.min.toLocaleString('es-MX') + ' – ' + formatearPrecio(r.max);
+      $rangosHtml.filter('[data-rango-categoria="' + categoria + '"]').text(texto);
+    });
+  }
+
+  // Sin URL, sin fetch o si la hoja falla, se conservan en silencio los
+  // precios escritos en el HTML. Va antes de revisar turn.js para que los
+  // precios se actualicen aunque la revista no se anime.
+  function cargarPreciosDesdeSheet() {
+    var url = $.trim(GOOGLE_SHEET_CSV_URL || '');
+    if (!url || url === 'PEGA_AQUI_URL_CSV' || !window.fetch) { return; }
+    // Abierto como archivo (origen "null"), Google no manda el permiso CORS
+    // y el navegador registra un error que JS no puede callar. En Netlify o
+    // con un servidor local sí funciona.
+    if (location.protocol === 'file:') { return; }
+
+    fetch(url, { cache: 'no-store' })
+      .then(function (res) {
+        if (!res.ok) { throw new Error('HTTP ' + res.status); }
+        return res.text();
+      })
+      .then(aplicarPrecios)
+      .catch(function () {});
+  }
+
+  cargarPreciosDesdeSheet();
 
   if (!$.fn.turn) {
     console.error('turn.js no se cargó; la revista se muestra sin animación.');

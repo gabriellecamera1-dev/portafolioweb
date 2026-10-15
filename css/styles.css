@@ -734,7 +734,8 @@ body {
 /* Pág. 30 — Esperanza: foto grande a sangre por la derecha y, abajo, un
    acercamiento de la misma toma (el contenedor recorta la foto escalada;
    transform-origin apunta a la mano con el reloj). */
-.rt-07 .bd-p1 { left: 33.6%; top: 1.8%; width: 66.4%; height: 66%; }
+/* Margen derecho ≈ al de arriba (2.4%): en doble página la foto pegaba con el lomo */
+.rt-07 .bd-p1 { left: 32%; top: 1.8%; width: 65.6%; height: 66%; }
 .rt-07 .bd-p2 { left: 5.4%; top: 69%; width: 36.6%; height: 24%; overflow: hidden; }
 .rt-07 .bd-t1 { left: 48%; top: 81%; font-size: 2.1em; }
 
