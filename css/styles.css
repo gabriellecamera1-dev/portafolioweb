@@ -33,6 +33,9 @@
      el marco de las fotos chicas. La clienta eligió el crema; el dorado se
      conserva por si se quiere volver a comparar cambiando solo esta línea. */
   --active-cover-color: var(--cover-yellow);
+  /* Canales RGB para las transparencias del botón Siguiente de la portada */
+  --cover-next-light: 239, 224, 200; /* crema #efe0c8 */
+  --cover-next-shade: 58, 8, 12;     /* vino #3a080c, el del lienzo de og-cover */
   --display: "Instrument Serif", var(--serif);
   --script: "Pinyon Script", cursive;
   --typewriter: "Courier Prime", "Courier New", monospace; /* galería boudoir */
@@ -393,11 +396,20 @@ body {
   text-transform: uppercase;
 }
 
+/* Varias personas no notaban que SIGUIENTE era el botón para abrir la
+   revista: como texto suelto se confundía con la frase. Ahora es una
+   pastilla translúcida que se despega del vestido, con un pulso de entrada
+   que lleva la vista a esta esquina y un latido suave que se repite.
+   Medidas en em (≈ 8px 18px y 20px con la revista a tamaño de escritorio)
+   para que escalen con la página como todo lo demás. */
 .cover-next {
   margin-top: 1.4em;
-  padding: 0.4em 0;
-  border: 0;
-  background: none;
+  padding: 0.8em 1.8em;
+  border: 1px solid rgba(var(--cover-next-light), 0.45);
+  border-radius: 2em;
+  background: rgba(var(--cover-next-shade), 0.35);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
   color: inherit;
   font-family: var(--sans);
   font-size: 0.62em;
@@ -406,23 +418,54 @@ body {
   text-transform: uppercase;
   text-shadow: inherit;
   cursor: pointer;
-  opacity: 0.9;
-  transition: opacity 0.25s, transform 0.25s;
+  transition: background-color 0.3s, border-color 0.3s;
+  /* La entrada dura 1.2s tras 0.8s de espera; el latido empieza al
+     terminar (2s) para que no se pisen el box-shadow. */
+  animation:
+    cover-next-entrada 1.2s ease-out 0.8s both,
+    cover-next-latido 2.5s ease-in-out 2s infinite;
 }
 
-.cover-next i {
+.cover-next .arrow-icon {
+  display: inline-block;
   margin-left: 0.6em;
+  animation: cover-next-flecha 2.5s ease-in-out 2s infinite;
 }
 
 .cover-next:hover,
 .cover-next:focus-visible {
-  opacity: 1;
-  transform: translateX(0.3em);
+  background-color: rgba(var(--cover-next-light), 0.18);
+  border-color: rgb(var(--cover-next-light));
 }
 
 .cover-next:focus-visible {
   outline: 1px solid currentColor;
   outline-offset: 4px;
+}
+
+@keyframes cover-next-entrada {
+  0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(var(--cover-next-light), 0); }
+  40%  { transform: scale(1.08); box-shadow: 0 0 1.6em 0.3em rgba(var(--cover-next-light), 0.55); }
+  100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(var(--cover-next-light), 0); }
+}
+
+/* Solo el halo respira; el borde lo maneja :hover con transition */
+@keyframes cover-next-latido {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--cover-next-light), 0); }
+  50%      { box-shadow: 0 0 1em 0.1em rgba(var(--cover-next-light), 0.25); }
+}
+
+/* ≈ 5px con el tamaño de escritorio */
+@keyframes cover-next-flecha {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(0.5em); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-next,
+  .cover-next .arrow-icon {
+    animation: none;
+  }
 }
 
 /* ---------- Páginas 2 y 3: Boudoir / Retrato ----------
