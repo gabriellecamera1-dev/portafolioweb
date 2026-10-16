@@ -1,8 +1,4 @@
-/* ==========================================================
-   Revista interactiva – Gabrielle Camera
-   El tamaño de fuente de #magazine lo ajusta script.js según
-   el ancho de página, por eso el contenido usa unidades em.
-   ========================================================== */
+/* Gabrielle Camera · Todo mide en em: script.js fija el font-size de #magazine. */
 
 :root {
   --bg: #3b0809;
@@ -12,37 +8,25 @@
   --line: rgba(96, 13, 18, 0.22);
   --wine: #ad2b31;
   --placeholder: #e0e0e0;
-  --placeholder-ink: #9a9a9a;
 
   --serif: "Playfair Display", Georgia, "Times New Roman", serif;
   --sans: "Montserrat", "Helvetica Neue", Arial, sans-serif;
 
-  --dark: #1a1a1a;
   --cover-red: #c8101a;
 
-  /* ===== Colores de la portada (página 1) =====
-     Rojo del título "GABRIELLE" y de la leyenda sobre la mesa
-     ("Galería fotográfica • …"). Para cambiarlo, edita este valor. */
   --cover-title: #721e18;
 
-  /* Las dos opciones que se probaron para los textos claros de la portada */
-  --cover-yellow: #eed6a4; /* crema: el definitivo (Revisión 3) */
-  --cover-gold: #c38d5a;   /* dorado metálico, descartado */
-
-  /* Color de CAMERA, 2026, "Portafolio", la frase, el botón SIGUIENTE y
-     el marco de las fotos chicas. La clienta eligió el crema; el dorado se
-     conserva por si se quiere volver a comparar cambiando solo esta línea. */
+  --cover-yellow: #eed6a4;
   --active-cover-color: var(--cover-yellow);
-  /* Canales RGB para las transparencias del botón Siguiente de la portada */
-  --cover-next-light: 239, 224, 200; /* crema #efe0c8 */
-  --cover-next-shade: 58, 8, 12;     /* vino #3a080c, el del lienzo de og-cover */
+  --cover-next-light: 239, 224, 200;
+  --cover-next-shade: 58, 8, 12;
   --display: "Instrument Serif", var(--serif);
   --script: "Pinyon Script", cursive;
-  --typewriter: "Courier Prime", "Courier New", monospace; /* galería boudoir */
+  --typewriter: "Courier Prime", "Courier New", monospace;
 
-  --vino: #3f0a0d; /* fondo de las galerías, medido en los bocetos */
-  --carbon: #1c1816; /* galería masculina: negro cálido */
-  --taupe: #4a403a; /* galería masculina: gris cálido */
+  --vino: #3f0a0d;
+  --carbon: #1c1816;
+  --taupe: #4a403a;
 }
 
 *,
@@ -80,8 +64,8 @@ body {
 }
 
 #magazine {
-  font-size: 16px; /* valor base; script.js lo recalcula */
-  flex: none; /* nunca más angosto que el tamaño que le da turn.js */
+  font-size: 16px;
+  flex: none;
 }
 
 #magazine .page {
@@ -96,7 +80,6 @@ body {
   position: relative;
 }
 
-/* Sombra del lomo muy sutil: .even = página izquierda, .odd = derecha */
 #magazine .page.even {
   background-image: linear-gradient(to left, rgba(59, 8, 9, 0.05) 0%, rgba(59, 8, 9, 0) 3%);
 }
@@ -105,46 +88,12 @@ body {
   background-image: linear-gradient(to right, rgba(59, 8, 9, 0.05) 0%, rgba(59, 8, 9, 0) 3%);
 }
 
-/* Sombra del libro completo. drop-shadow sigue la silueta pintada, así
-   no se proyecta una página sobre la otra en el lomo (un box-shadow por
-   página sí lo hacía) ni aparece una caja vacía junto a la portada. */
 #magazine {
   filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.45));
 }
 
-/* ---------- Placeholder de imagen ---------- */
-
-.img-placeholder {
-  background-color: #e0e0e0;
-  color: var(--placeholder-ink);
-  width: 100%;
-  min-height: 6em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4em;
-  font-family: var(--sans);
-  font-size: 0.7em;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-}
-
-.img-placeholder::before {
-  content: "\f030"; /* fa-camera */
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  font-size: 1.8em;
-  letter-spacing: 0;
-}
-
-.img-placeholder::after {
-  content: "Imagen";
-}
-
 /* ---------- Elementos comunes ---------- */
 
-/* El número va centrado; las esquinas exteriores son para .page-nav */
 .page-number {
   position: absolute;
   bottom: 1em;
@@ -155,10 +104,7 @@ body {
   color: var(--ink-soft);
 }
 
-/* ---------- Navegación dentro de las páginas ----------
-   script.js inserta un .page-nav en cada página. En doble página solo se
-   ve el botón de la esquina exterior (Volver en las pares/izquierda,
-   Siguiente en las impares/derecha); en página sola se ven ambos. */
+/* ---------- Navegación (la inserta script.js) ---------- */
 
 .page-nav {
   position: absolute;
@@ -209,8 +155,6 @@ body {
   display: none;
 }
 
-/* La portada usa su propio botón SIGUIENTE (.cover-next) en el bloque
-   de "Portafolio"; el de la navegación general saldría repetido. */
 .page-cover .page-nav {
   display: none;
 }
@@ -246,15 +190,12 @@ body {
   color: var(--paper);
 }
 
-/* ---------- Página 1: Portada ---------- */
-
-/* Collage editorial: todo en posición absoluta sobre la foto a sangre.
-   Capas: foto 0 → título 1 → fotos pequeñas 2 → textos 3. */
+/* ---------- Pág. 1 · Portada ---------- */
 
 #magazine .page-cover {
   display: block;
   padding: 0;
-  overflow: hidden; /* nada del collage sale del papel durante el pase */
+  overflow: hidden;
   color: var(--cover-red);
 }
 
@@ -264,10 +205,6 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Centrado, como en el diseño de la clienta (1000036214.png): la foto
-     es 2:3 y su diseño A4 recorta ~3% arriba y abajo. En móvil (A4) queda
-     igual; en doble página (1:1.3) se recorta un poco más, pero repartido,
-     para no perder la mesa de abajo. */
   object-position: 50% 50%;
   z-index: 0;
 }
@@ -283,19 +220,14 @@ body {
   text-align: center;
   font-family: var(--display);
   font-weight: 400;
-  font-size: 6.2em; /* un poco más chico, pedido de la clienta (antes 6.8em) */
+  font-size: 6.2em;
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  /* Proporción de la referencia (Imagenes/Revision3/1000036320.png): la
-     palabra ocupa ~92% del ancho y el alto de las letras es ~0.21 del
-     ancho. Con 1.45 quedaba en ~0.27, demasiado estirada. */
   transform: scaleY(1.15);
   transform-origin: top;
 }
 
-/* CAMERA arriba de 2026, alineados a la derecha bajo el título, como en
-   el diseño de la clienta (Imagenes/revision2/1000036214.png). */
 .cover-tag {
   position: absolute;
   right: 5.5%;
@@ -305,14 +237,12 @@ body {
   line-height: 1;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  /* sombra oscura: sin ella el dorado se pierde sobre la cortina clara */
   text-shadow: 0 0 0.3em rgba(0, 0, 0, 0.6), 0 0.05em 0.8em rgba(0, 0, 0, 0.5);
 }
 
 .cover-tag-name { top: 18%; font-size: 1.6em; font-weight: 500; }
 .cover-tag-year { top: 23.5%; right: 6%; font-size: 1.15em; font-weight: 400; }
 
-/* Ocupa toda la portada: las fotos chicas se ubican con % de la página */
 .cover-stack {
   position: absolute;
   inset: 0;
@@ -327,8 +257,6 @@ body {
   box-shadow: 0 0.4em 1.2em rgba(0, 0, 0, 0.35);
 }
 
-/* Debajo del brazo de la modelo, escalonadas (la segunda un poco más a la
-   derecha) y sin encimarse, como en el diseño de la clienta. */
 .stack-back {
   left: 5.5%;
   top: 47%;
@@ -343,14 +271,10 @@ body {
   height: 19%;
 }
 
-/* Sin text-transform: el formato mixto (minúsculas • MAYÚSCULAS) es
-   el que pidió la clienta y viene escrito así en el HTML.
-   El tamaño está medido para que la línea termine antes del vestido
-   (≈ 48% del ancho) y no se pierda el vino sobre el vino. */
 .cover-caption {
   position: absolute;
   left: 2%;
-  bottom: 1%; /* sobre la mesa: más arriba se perdía contra la cortina */
+  bottom: 1%;
   z-index: 3;
   margin: 0;
   color: var(--cover-title);
@@ -361,9 +285,6 @@ body {
   white-space: nowrap;
 }
 
-/* Bloque inferior sobre el vestido (diseño de la clienta): "Portafolio"
-   en script, la frase y el botón Siguiente, centrados entre sí. El
-   vestido oscuro da contraste a cualquiera de los dos colores. */
 .cover-signature {
   position: absolute;
   right: 1%;
@@ -396,12 +317,6 @@ body {
   text-transform: uppercase;
 }
 
-/* Varias personas no notaban que SIGUIENTE era el botón para abrir la
-   revista: como texto suelto se confundía con la frase. Ahora es una
-   pastilla translúcida que se despega del vestido, con un pulso de entrada
-   que lleva la vista a esta esquina y un latido suave que se repite.
-   Medidas en em (≈ 8px 18px y 20px con la revista a tamaño de escritorio)
-   para que escalen con la página como todo lo demás. */
 .cover-next {
   margin-top: 1.4em;
   padding: 0.8em 1.8em;
@@ -419,8 +334,6 @@ body {
   text-shadow: inherit;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
-  /* La entrada dura 1.2s tras 0.8s de espera; el latido empieza al
-     terminar (2s) para que no se pisen el box-shadow. */
   animation:
     cover-next-entrada 1.2s ease-out 0.8s both,
     cover-next-latido 2.5s ease-in-out 2s infinite;
@@ -449,13 +362,11 @@ body {
   100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(var(--cover-next-light), 0); }
 }
 
-/* Solo el halo respira; el borde lo maneja :hover con transition */
 @keyframes cover-next-latido {
   0%, 100% { box-shadow: 0 0 0 0 rgba(var(--cover-next-light), 0); }
   50%      { box-shadow: 0 0 1em 0.1em rgba(var(--cover-next-light), 0.25); }
 }
 
-/* ≈ 5px con el tamaño de escritorio */
 @keyframes cover-next-flecha {
   0%, 100% { transform: translateX(0); }
   50%      { transform: translateX(0.5em); }
@@ -468,15 +379,12 @@ body {
   }
 }
 
-/* ---------- Páginas 2 y 3: Boudoir / Retrato ----------
-   Boceto "AcomodoDeRetratos": dos columnas asimétricas, texto y una sola
-   foto a toda la altura. Retrato invierte el orden para equilibrar la
-   doble página. La palabra gigante translúcida imita el fondo del boceto. */
+/* ---------- Págs. 2–3 · Intros ---------- */
 
 #magazine .page-intro {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
-  grid-template-rows: minmax(0, 1fr); /* fila del alto de la página: la foto no la estira */
+  grid-template-rows: minmax(0, 1fr);
   column-gap: 1.6em;
   align-items: center;
 }
@@ -538,15 +446,13 @@ body {
   white-space: nowrap;
 }
 
-/* Una sola foto a toda la columna, separada del borde superior para
-   dejar respirar la marca de agua. object-fit recorta sin deformar. */
 .intro-photo {
   position: relative;
   z-index: 1;
   display: block;
   align-self: stretch;
   width: 100%;
-  height: calc(100% - 4.6em); /* alto de la fila menos el margen vertical */
+  height: calc(100% - 4.6em);
   min-height: 0;
   margin: 3.4em 0 1.2em;
   object-fit: cover;
@@ -554,14 +460,7 @@ body {
   background-color: var(--placeholder);
 }
 
-/* ---------- Galerías (págs. 4 a 33) ----------
-   Boudoir (4–16) y Retrato (17–24) replican los bocetos de la clienta
-   (Imagenes/Galeria/BOUDOIR y Retrato); la masculina (25–29) usa las
-   mismas piezas (.bd-photo, .bd-word) con diseño propio. Son
-   collages libres, así que fotos y textos van en posición absoluta con
-   porcentajes de la página: turn.js solo cambia el tamaño y el acomodo se
-   conserva igual en doble página (1.3) y en móvil (A4). object-fit: cover
-   absorbe la diferencia de proporción sin deformar las fotos. */
+/* ---------- Galerías (págs. 4–33): posiciones en % de la página ---------- */
 
 #magazine .page.bg-vino {
   background-color: var(--vino);
@@ -589,32 +488,14 @@ body {
   color: rgba(239, 224, 200, 0.55);
 }
 
-/* Foto pendiente: .bd-photo pisa el display y el fondo del placeholder;
-   se restablecen con tonos del fondo de la página para que el hueco se
-   note sin desentonar. */
-.img-placeholder.bd-photo {
-  display: flex;
-  min-height: 0;
-  background-color: rgba(239, 224, 200, 0.06);
-  color: rgba(239, 224, 200, 0.45);
-  border: 1px dashed rgba(239, 224, 200, 0.3);
-  box-shadow: none;
-}
-
-.bg-crema .img-placeholder.bd-photo {
-  background-color: rgba(96, 13, 18, 0.05);
-  color: var(--ink-soft);
-  border-color: var(--line);
-}
-
 .bd-photo {
   position: absolute;
   z-index: 1;
   display: block;
   margin: 0;
   object-fit: cover;
-  background-color: #2a0608; /* mientras carga la foto */
-  box-shadow: 0 0.35em 1em rgba(0, 0, 0, 0.35); /* efecto de foto impresa */
+  background-color: #2a0608;
+  box-shadow: 0 0.35em 1em rgba(0, 0, 0, 0.35);
 }
 
 .bd-word {
@@ -630,9 +511,6 @@ body {
   white-space: nowrap;
 }
 
-/* Texto vertical. vertical-rl se lee de arriba hacia abajo; girado 180°
-   se lee de abajo hacia arriba. Así no hay que compensar el ancho de la
-   caja como con rotate(90deg). */
 .bd-down,
 .bd-up {
   writing-mode: vertical-rl;
@@ -651,9 +529,7 @@ body {
 .bd-02 .bd-p1 { left: 18.5%; top: 6%; width: 63.5%; height: 74%; }
 .bd-02 .bd-t1 { left: 0; right: 0; top: 82.5%; text-align: center; font-size: 1.6em; line-height: 1.25; }
 
-/* Pág. 8 — Impaciente (vertical a la derecha). width: auto deja a la foto
-   su proporción natural (4:5): con una caja más angosta, cover le cortaba
-   el estómago a la orilla izquierda. */
+/* Pág. 8 — Impaciente */
 .bd-03 .bd-p1 { left: 8%; top: 16%; width: auto; height: 64%; }
 .bd-03 .bd-t1 { left: 88%; top: 48%; font-size: 1.5em; transform: translateY(-50%) rotate(180deg); }
 
@@ -661,8 +537,7 @@ body {
 .bd-04 .bd-p1 { left: 15.5%; top: 7%; width: 67%; height: 77%; }
 .bd-04 .bd-t1 { left: 0; right: 0; top: 87%; text-align: center; font-size: 1.8em; }
 
-/* Pág. 11 — Sutil / Tierno. La mitad crema es un pseudo-elemento recortado
-   en diagonal; los textos se inclinan siguiendo esa línea. */
+/* Pág. 11 — Sutil / Tierno */
 .bd-05::before {
   content: "";
   position: absolute;
@@ -676,7 +551,6 @@ body {
 .bd-05 .bd-t1 { left: 71%; top: 29%; font-size: 2.2em; transform: translate(-50%, -50%) rotate(-57deg); }
 .bd-05 .bd-t2 { left: 44%; top: 79%; font-size: 2.2em; color: var(--vino); transform: translate(-50%, -50%) rotate(-57deg); }
 
-/* El número y "Siguiente" caen sobre la parte crema */
 .bd-05 .page-number,
 .bd-05 .nav-next {
   color: var(--vino);
@@ -699,11 +573,11 @@ body {
 .bd-08 .bd-p1 { left: 15.5%; top: 6.5%; width: 67%; height: 78%; }
 .bd-08 .bd-t1 { left: 0; right: 0; top: 88%; text-align: center; font-size: 1.5em; }
 
-/* Pág. 15 — Deseo (foto pendiente) */
+/* Pág. 15 — Deseo */
 .bd-09 .bd-t1 { left: 0; right: 0; top: 11%; text-align: center; font-size: 2em; }
 .bd-09 .bd-p1 { left: 9%; top: 28%; width: 82%; height: 44%; }
 
-/* Pág. 16 — Con-pla / cer (vertical) y Soberana */
+/* Pág. 16 — Con-pla / cer */
 .bd-10 .bd-p1 { left: 5%; top: 4%; width: 46%; height: 55.5%; }
 .bd-10 .bd-t1 { right: 9%; top: 6%; font-size: 3.2em; line-height: 1.25; }
 .bd-10 .bd-t2 { left: 14%; top: 64%; font-size: 1.7em; }
@@ -727,24 +601,21 @@ body {
 .bd-13 .bd-p1 { left: 21.5%; top: 13.5%; width: 57%; height: 68%; }
 .bd-13 .bd-t2 { right: 4%; top: 85%; font-size: 2em; }
 
-/* Págs. 6, 7 y 9 — sin boceto de la clienta. Las fotos van solas con
-   width: auto (proporción natural, sin recorte) como Impaciente, y se
-   acomodan distinto en cada página para no repetir el mismo esquema. */
+/* Págs. 6, 7 y 9 — sin boceto */
 
-/* Pág. 6 — Hipnótica: foto centrada y palabra abajo, como Permanente */
+/* Pág. 6 — Hipnótica */
 .bd-14 .bd-p1 { left: 50%; top: 6%; width: auto; height: 76%; transform: translateX(-50%); }
 .bd-14 .bd-t1 { left: 0; right: 0; top: 87%; text-align: center; font-size: 1.8em; }
 
-/* Pág. 7 — Natural: hace espejo con la 6 en el pliego, foto a la izquierda
-   y la palabra vertical a la derecha (de arriba hacia abajo) */
+/* Pág. 7 — Natural */
 .bd-15 .bd-p1 { left: 7%; top: 8%; width: auto; height: 80%; }
 .bd-15 .bd-t1 { left: 84%; top: 50%; font-size: 2.6em; transform: translateY(-50%); }
 
-/* Pág. 9 — Húmedo: palabra arriba y foto debajo, como Intachable */
+/* Pág. 9 — Húmedo */
 .bd-16 .bd-t1 { left: 0; right: 0; top: 4.5%; text-align: center; font-size: 2.2em; }
 .bd-16 .bd-p1 { left: 50%; top: 15%; width: auto; height: 76%; transform: translateX(-50%); }
 
-/* --- Galería Retrato (págs. 20 a 26) --- */
+/* ---------- Retrato femenino (págs. 20–26) ---------- */
 
 /* Pág. 21 — Magnética / Atracción */
 .rt-01 .bd-p1 { left: 2.6%; top: 5.4%; width: 50.4%; height: 54%; }
@@ -752,13 +623,12 @@ body {
 .rt-01 .bd-t2 { left: 28%; top: 77%; font-size: 1.6em; line-height: 1.5; text-align: center; transform: translate(-50%, -50%); }
 .rt-01 .bd-p2 { left: 57.4%; top: 54%; width: 39.8%; height: 39%; }
 
-/* Pág. 20 — Resiliente: abre la galería con el rótulo "Retrato femenino",
-   el mismo estilo que "Retrato masculino" en Tinta & humo (Revisión 3). */
+/* Pág. 20 — Resiliente */
 .rt-02 .bd-t1 { left: 0; right: 0; top: 7.5%; text-align: center; font-size: 2.3em; }
 .rt-02 .hm-cap { left: 0; right: 0; top: 14.5%; text-align: center; padding-left: 0.3em; opacity: 0.85; }
 .rt-02 .bd-p1 { left: 19.7%; top: 20%; width: 61.3%; height: 72%; }
 
-/* Pág. 22 — Imparable (vertical, de arriba hacia abajo) */
+/* Pág. 22 — Imparable */
 .rt-03 .bd-p1 { left: 3.9%; top: 7%; width: 71.7%; height: 85%; }
 .rt-03 .bd-t1 { left: 84%; top: 50%; font-size: 3.2em; transform: translateY(-50%); }
 
@@ -774,10 +644,7 @@ body {
 .rt-06 .bd-p1 { left: 18.5%; top: 9%; width: 64.2%; height: 76%; }
 .rt-06 .bd-t1 { left: 0; right: 0; top: 88%; text-align: center; font-size: 1.9em; }
 
-/* Pág. 30 — Esperanza: foto grande a sangre por la derecha y, abajo, un
-   acercamiento de la misma toma (el contenedor recorta la foto escalada;
-   transform-origin apunta a la mano con el reloj). */
-/* Margen derecho ≈ al de arriba (2.4%): en doble página la foto pegaba con el lomo */
+/* Pág. 30 — Esperanza */
 .rt-07 .bd-p1 { left: 32%; top: 1.8%; width: 65.6%; height: 66%; }
 .rt-07 .bd-p2 { left: 5.4%; top: 69%; width: 36.6%; height: 24%; overflow: hidden; }
 .rt-07 .bd-t1 { left: 48%; top: 81%; font-size: 2.1em; }
@@ -787,7 +654,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 100%; /* la caja es apaisada: muestra la parte baja */
+  object-position: 50% 100%;
   transform: scale(2.2);
   transform-origin: 50% 98%;
 }
@@ -796,10 +663,7 @@ body {
 .rt-08 .bd-p1 { left: 21.4%; top: 8%; width: 61.1%; height: 73.3%; }
 .rt-08 .bd-t1 { left: 0; right: 0; top: 86%; text-align: center; font-size: 1.6em; }
 
-/* --- Retrato masculino (págs. 27 a 33) ---
-   Diseño propio: títulos grandes en Instrument Serif con pies en la
-   tipografía de máquina de escribir de las otras galerías, fondos oscuros
-   cálidos y fotos encimadas en escalonado asimétrico. */
+/* ---------- Retrato masculino (págs. 27–33) ---------- */
 
 .hm-title {
   position: absolute;
@@ -826,18 +690,14 @@ body {
   opacity: 0.7;
 }
 
-/* El marco del color de fondo separa las fotos donde se enciman */
 .bg-carbon .bd-photo { box-shadow: 0 0 0 0.3em var(--carbon), 0 0.6em 1.4em rgba(0, 0, 0, 0.5); }
 .bg-taupe .bd-photo { box-shadow: 0 0 0 0.3em var(--taupe), 0 0.6em 1.4em rgba(0, 0, 0, 0.4); }
 
-/* Las fotos que van solas usan width: auto para conservar su proporción
-   natural (sin recorte) y se centran con translateX. */
-
-/* Pág. 28 — Esencia: el retrato solo, el título debajo sin tocar el rostro */
+/* Pág. 28 — Esencia */
 .hm-01 .bd-p1 { left: 50%; top: 6%; width: auto; height: 74%; transform: translateX(-50%); }
 .hm-01 .hm-title { left: 0; right: 0; top: 84%; text-align: center; }
 
-/* Pág. 27 — Tinta & humo (abre el retrato masculino): las dos fotos fumando, escalonadas */
+/* Pág. 27 — Tinta & humo */
 .hm-02 .hm-title { left: 7%; top: 6%; }
 .hm-02 .hm-cap { left: 7.5%; top: 25%; }
 .hm-02 .bd-p1 { left: 7%; top: 32%; width: 41%; height: 48%; }
@@ -850,21 +710,17 @@ body {
 .hm-03 .hm-title { left: 52%; top: 73%; }
 .hm-03 .hm-cap { left: 52.5%; top: 84%; }
 
-/* Pág. 31 — Escalinata: foto completa con el marco de postal de la galería */
+/* Pág. 31 — Escalinata */
 .hm-04 .bd-p1 { left: 50%; top: 7%; width: auto; height: 84%; transform: translateX(-50%); }
 
-/* Pág. 33 — Presencia: tres verticales escalonadas. Sin el marco de postal:
-   sobre el fondo carbón dejaba orillas oscuras raras (nota de la clienta). */
+/* Pág. 33 — Presencia */
 .hm-05 .hm-title { left: 6%; top: 5%; font-size: 3.4em; }
 .hm-05 .bd-photo { box-shadow: 0 0.6em 1.4em rgba(0, 0, 0, 0.5); }
 .hm-05 .bd-p1 { left: 5%; top: 29%; width: 29%; height: 39%; }
 .hm-05 .bd-p2 { left: 35.5%; top: 39%; width: 29%; height: 39%; }
 .hm-05 .bd-p3 { left: 66%; top: 29%; width: 29%; height: 39%; }
 
-/* Pág. 32 — Auténtico: el retrato solo y grande, cargado a la derecha con
-   el marco de postal, y el título vertical en la franja izquierda (se lee
-   de abajo hacia arriba). Así no se parece a Presencia, que va enfrente
-   con el título horizontal arriba. */
+/* Pág. 32 — Auténtico */
 .hm-06 .bd-p1 { right: 5%; top: 7%; width: auto; height: 78%; }
 .hm-06 .hm-title {
   left: 7%;
@@ -874,7 +730,7 @@ body {
   transform: translateY(-50%) rotate(180deg);
 }
 
-/* ---------- Páginas 34 y 35: Paquetes y precios ---------- */
+/* ---------- Págs. 34–35 · Precios ---------- */
 
 .prices-header {
   text-align: center;
@@ -908,11 +764,6 @@ body {
   margin: 0 0.8em;
 }
 
-/* Acordeones: <summary> como subtítulo de revista, contenido en sans fino */
-
-/* La página tiene alto fijo: si un paquete abierto (con su "info
-   importante") no cabe, la lista de paquetes se desplaza por dentro y las
-   notas al pie y la navegación se quedan en su sitio. */
 .page-prices .accordion {
   flex: 0 1 auto;
   min-height: 0;
@@ -926,10 +777,6 @@ body {
   margin: 0;
 }
 
-/* Foto al lado de los paquetes (diseño de la clienta): pág. 6 lista |
-   foto, pág. 7 foto | lista, el orden lo da el HTML. La fila se encoge si
-   falta alto y el acordeón, estirado a ese alto, se desplaza por dentro;
-   la foto tiene alto fijo y nunca se deforma (object-fit). */
 .prices-body {
   display: flex;
   align-items: flex-start;
@@ -944,7 +791,6 @@ body {
   align-self: stretch;
 }
 
-/* Columna de la foto con el botón "Continuar viendo galería" debajo */
 .prices-media {
   flex: 0 0 42%;
   width: 42%;
@@ -961,10 +807,8 @@ body {
   object-position: center 25%;
 }
 
-/* El texto es largo para la columna: se parte en dos líneas antes que
-   desbordar. */
 .btn-continue {
-  border: 1.5px solid var(--wine); /* borde vino, como en el diseño (Revisión 3) */
+  border: 1.5px solid var(--wine);
   color: var(--wine);
   padding: 1em 0.8em;
   font-size: 0.5em;
@@ -978,8 +822,6 @@ body {
   color: var(--paper);
 }
 
-/* Columna angosta: el precio baja bajo el nombre, la lista va en una
-   sola columna y el botón de WhatsApp se compacta para no desbordar. */
 .prices-body .accordion > details > summary {
   flex-wrap: wrap;
   gap: 0.2em 0.6em;
@@ -1015,7 +857,7 @@ body {
   display: flex;
   align-items: baseline;
   gap: 1em;
-  list-style: none; /* Firefox: quita el marcador */
+  list-style: none;
   cursor: pointer;
   padding: 0.95em 0.3em 0.8em;
   border-bottom: 1px solid var(--wine);
@@ -1055,7 +897,6 @@ body {
   text-transform: none;
 }
 
-/* Cruz fina que gira a "×" al abrir */
 .accordion > details > summary::after {
   content: "+";
   font-family: var(--sans);
@@ -1107,7 +948,6 @@ body {
   to   { opacity: 1; transform: none; }
 }
 
-/* Contenido de cada paquete: lista, aviso y botón de reserva centrado */
 .package-body {
   display: flex;
   flex-direction: column;
@@ -1119,8 +959,6 @@ body {
   margin-top: 1em;
 }
 
-/* "Leer info importante": caja con borde vino y fondo tenue para que
-   destaque sobre el acordeón y la clienta no la pase por alto. */
 .info-box {
   border: 1px solid var(--wine);
   border-left-width: 3px;
@@ -1142,7 +980,7 @@ body {
 }
 
 .info-box summary::after {
-  content: "\203A"; /* › gira hacia abajo al abrir */
+  content: "\203A";
   float: right;
   font-size: 1.4em;
   line-height: 0.7;
@@ -1185,7 +1023,6 @@ body {
   font-size: 1.4em;
 }
 
-/* Notas al pie: dos columnas; Vestuario (texto largo) ocupa todo el ancho */
 .fine-print {
   margin-top: auto;
   display: grid;
@@ -1214,7 +1051,7 @@ body {
   color: var(--ink-soft);
 }
 
-/* ---------- Página 36: Contraportada ---------- */
+/* ---------- Pág. 36 · Contraportada ---------- */
 
 #magazine .page-back {
   background-color: var(--ink);
@@ -1299,11 +1136,7 @@ body {
   margin: 0 0 1em;
 }
 
-/* ---------- Móvil (página única, < 768px; ver BREAKPOINT en script.js) ----------
-   La página escala en em con el ancho de pantalla, así que en un teléfono
-   la base ronda 12px y los textos chicos bajaban de 7px. Aquí se suben
-   esos textos y se reducen los márgenes interiores; script.js además da
-   a la página proporción A4 para que haya alto suficiente. */
+/* ---------- Móvil (< 768px, BREAKPOINT de script.js) ---------- */
 
 @media (max-width: 767px) {
   body {
@@ -1350,9 +1183,6 @@ body {
     margin-bottom: 0.8em;
   }
 
-  /* En móvil el texto es más grande: la foto cede ancho a la columna de
-     paquetes. Si el botón aún no cabe en una línea, se parte antes que
-     desbordar. */
   .prices-body {
     gap: 1em;
   }
